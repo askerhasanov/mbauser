@@ -42,23 +42,23 @@ class _RegisterPageState extends State<RegisterPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children:[
-                    SizedBox(height: 50,),
+                    SizedBox(height: 30,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Qeydiyyat',
                           style: TextStyle(
                               color: Colors.red,
-                              fontSize: 40,
+                              fontSize: 30,
                               fontWeight: FontWeight.bold
                           ),
                         ),
                         SizedBox(height: 10,),
-                        Text('Moto Baku Akademiyə xoş gəlmişsiniz!',
+                        Text('Moto Baku Academy-də olan yeniliklərdən xəbərdar olmaq, kurslara qoşulmaq və sürməyi öyrənməy üçün qeydiyyatdan keçin!',
                           style: TextStyle(
                             color: Colors.black54,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 14,
                           ),
                         ),
                       ],
@@ -70,10 +70,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           formField(fullName, 'Ad Soyad', 'Adınız, Soyadınız', false),
-                          formField(userName, 'Istifadeci adi', 'istifadeciadiniz', false),
-                          formField(email, 'Email', 'email@email.com', false),
+                          formField(userName, 'İstifadəçi adı', 'istifadəçiadı', false),
+                          formField(email, 'Email', 'adınız@email.com', false),
                           // phone number
-                          Text('Telefon Nomresi', textAlign: TextAlign.start,),
+                          Text('Telefon Nömrəsi', textAlign: TextAlign.start, style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),),
                           SizedBox(height: 5,),
                           Container(
                             height: 40,
@@ -118,8 +122,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                           ),
-                          formField(password, 'Password', '*******', true),
-                          formField(password2, 'Check', '*******', true),
+                          SizedBox(height: 5,),
+                          formField(password, 'Şifrə', '*******', true),
+                          formField(password2, 'Şifrə təkrar', '*******', true),
                         ]
                       )
                     ),
@@ -160,7 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 5.0),
+          padding: const EdgeInsets.only(bottom: 10.0),
           child: Text(
             label,
             style: TextStyle(
@@ -194,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
-        SizedBox(height: 5,),
+        SizedBox(height: 10,),
       ],
     );
   }

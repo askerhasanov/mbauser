@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "196726945085",
+    "firebase_url": "https://motobakuacademy-63832-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "motobakuacademy-63832",
+    "storage_bucket": "motobakuacademy-63832.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196726945085:android:a6a469fe5c43182cb60154",
+        "android_client_info": {
+          "package_name": "com.askerhasanov.mbauser"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4tW8ZPBMcjs6yrjV2lOSicmzht1zRUgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

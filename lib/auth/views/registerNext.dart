@@ -1,6 +1,7 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mbauser/auth/views/verifyPhone.dart';
 import 'package:mbauser/elements/mbabutton.dart';
 
 import 'login.dart';
@@ -93,7 +94,10 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
                     formField(profession, 'Peşəniz', 'işiniz', false, null),
                     dropDownFormField('Cinsiniz', 'seçin', _cntGender, {'kisi' : 'man', 'qadin' : 'woman', 'diger': 'other'}),
                     dropDownFormField('Haradan öyrənmisiniz', 'seçin', _cntFind, {'Sosial şəbəkədən' : 'social', 'Reklamlardan' : 'adds', 'Şəxsi tövsiyyə': 'offer', 'Özüm axtarmışam': 'search', 'digər': 'other', }),
-                    MbaButton(callback: (){}, bgColor: Colors.red, text: 'Next'),
+                    SizedBox(height: 20,),
+                    MbaButton(callback: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPhonePage()));
+                    }, bgColor: Colors.red, text: 'Next'),
                     //donthaveaccount
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -130,13 +134,13 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
           controller: controller,
           textFieldDecoration: InputDecoration(
             hintText: hint,
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                       color: Colors.red,
                       width: 1,
                       style: BorderStyle.solid
