@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mbauser/auth/views/register.dart';
+import 'package:mbauser/elements/colors.dart';
 import 'package:mbauser/firebase_options.dart';
 
 import 'auth/views/selectEntry.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: MbaColors.red),
         useMaterial3: true,
       ),
       routes: {
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         WalkThroughPage.id : (context) => WalkThroughPage(),
         RegisterPage.id : (context) => RegisterPage()
       },
-      initialRoute: RegisterPage.id,
+      initialRoute: WalkThroughPage.id,
     );
   }
 }

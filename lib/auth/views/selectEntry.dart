@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mbauser/auth/views/register.dart';
+import 'package:mbauser/elements/colors.dart';
 import '../../elements/mbabutton.dart';
 import '../../elements/mbabuttonoutline.dart';
 import 'login.dart';
@@ -20,7 +21,7 @@ class _RegistrationPageState extends State<SelectEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: MbaColors.light,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -35,11 +36,11 @@ class _RegistrationPageState extends State<SelectEntryPage> {
                   children: [
                     MbaButton(callback: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
-                    }, bgColor: Colors.black, text: "Giris"),
+                    }, bgColor: MbaColors.red, text: "GİRİŞ"),
                     SizedBox(height: 20,),
                     MbaButtonOutline(callback: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> RegisterPage()));
-                    }, lineColor: Colors.black, text: "Qediyyat"),
+                    }, lineColor: MbaColors.red, text: "QEYDİYYAT"),
                     SizedBox(height: 20,),
                   ],
                 ),

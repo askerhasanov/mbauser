@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mbauser/elements/colors.dart';
 
 
 
@@ -26,14 +27,14 @@ class _SurveyScreen1State extends State<SurveyScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: Colors.red,
+        color: MbaColors.light,
         child: Column(
           children: [
             Expanded(child: Image.asset(widget.imageSrc, height: 300, width: 300,)),
             SizedBox(height: 60,),
             Container(
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: MbaColors.red,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight:Radius.circular(10)),
                 ),
                 child: Padding(

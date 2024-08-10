@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mbauser/auth/views/register.dart';
+import 'package:mbauser/elements/colors.dart';
 
 import '../../elements/mbabutton.dart';
 import '../../elements/mbadivider.dart';
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children:[
-                  SizedBox(height: 50,),
+                  SizedBox(height: 80,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -59,58 +60,14 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                       ),
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 30,),
                   Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          children: [
-                            TabBar(
-                              overlayColor:WidgetStateProperty.all<Color>(Colors.transparent),
-                              tabAlignment: TabAlignment.start,
-                              dividerHeight: 0,
-                              labelColor: Colors.red,
-                              indicator: const UnderlineTabIndicator(
-                                  borderSide: BorderSide(
-                                    color: Colors.red,
-                                    width: 4,
-                                  )
-                              ),
-                              isScrollable: true,
-                              controller: _tabController,
-                              tabs: const [
-                                Tab(
-                                  child: Row(
-                                    children: [
-                                      Icon(EvaIcons.email_outline),
-                                      SizedBox(width: 10,),
-                                      Text('Email'),
-                                    ],
-                                  ),
-                                ),
-                                Tab(
-                                  child: Row(
-                                    children: [
-                                      Icon(EvaIcons.phone_call_outline),
-                                      SizedBox(width: 10,),
-                                      Text('Telefon'),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ]
-                        ),
                         Container(
                           height: 300,
-                          child: TabBarView(
-                            controller: _tabController,
-                            children: [
-                              _buildEmailLogin(),
-                              _buildPhoneLogin(),
-                            ],
-                          ),
+                          child: _buildEmailLogin(),
                         ),
                       ],
                     ),
@@ -126,18 +83,19 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           });
                         },
                       ),
-                      Text('Remind Me', ),
+                      Text('Məni xatırla', ),
                       Spacer(),
                       TextButton(
                         onPressed: () {
                           // Forgot password action
                         },
-                        child: Text('Forgot Password?',),
+                        child: Text('Şifrənizi unutmusunuz?',),
                       ),
                     ],
                   ),
+                  SizedBox(height: 30,),
                   MbaDivider(text: 'və ya', lineColor: Colors.red),
-              
+                  SizedBox(height: 30,),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Row(
@@ -242,37 +200,5 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       ],
     );
   }
-
-    Widget _buildPhoneLogin() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children:[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(
-              'Nömrəniz',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
-          Center(
-            child: TextField(
-              decoration: InputDecoration(labelText: 'Phone Number'),
-              keyboardType: TextInputType.phone,
-            ),
-          ),
-        ]
-      );
-    }
-
-    Widget _buildSocialButton(String assetPath) {
-      return CircleAvatar(
-        radius: 30,
-        backgroundImage: AssetImage(assetPath),
-      );
-    }
 }
 

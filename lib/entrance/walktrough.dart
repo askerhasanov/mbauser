@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:mbauser/elements/colors.dart';
 import 'package:mbauser/entrance/surveyScreen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -44,7 +45,7 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: MbaColors.light,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -70,11 +71,12 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
       ),
       bottomNavigationBar: Container(
         width: MediaQuery.of(context).size.width,
-        color: Colors.black,
+        color: MbaColors.red,
         height: 150,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            SizedBox(width: 60,),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -85,8 +87,8 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
                     effect: const ExpandingDotsEffect(
                       dotHeight: 20,
                       dotWidth: 20,
-                      dotColor: Colors.white70,
-                      activeDotColor: Colors.red,
+                      dotColor: MbaColors.lightRed,
+                      activeDotColor: Colors.white,
                     ),
                   ),
                 ]
@@ -102,11 +104,11 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
                   
                 },
                 style: IconButton.styleFrom(
-                  backgroundColor: Colors.red.shade300,
+                  backgroundColor: MbaColors.lightRed,
                 ),
                 icon: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(FontAwesome.chevron_right_solid, color: Colors.black,),
+                  child: Icon(FontAwesome.chevron_right_solid, color: Colors.white,),
                 )
             ),
             SizedBox(width: 30,),
