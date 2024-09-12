@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class UiHelpers{
 
 
-  static void showSnackBar(BuildContext context, String title){
+  static void showSnackBar({
+   required BuildContext context,  required String title, Color? color
+}){
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: Colors.black,
+        backgroundColor: color ?? Colors.black,
         content: Text(title),
         showCloseIcon: true,
       ),

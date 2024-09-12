@@ -1,10 +1,12 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mbauser/elements/colors.dart';
 import 'package:mbauser/elements/dropDownFormField.dart';
+import 'package:mbauser/elements/mbabutton.dart';
+import 'package:mbauser/elements/uiHelpers.dart';
 import '../../elements/pageheader.dart';
 import '../../models/courseBasicData.dart';
+import 'cardpaymentpage.dart';
 
 
 class JoinCoursePage extends StatefulWidget {
@@ -24,17 +26,21 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
 
 
   late SingleValueDropDownController _cntBranch;
+  late SingleValueDropDownController _cntPayType;
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _cntBranch =SingleValueDropDownController();
+    _cntBranch = SingleValueDropDownController();
+    _cntPayType = SingleValueDropDownController();
   }
 
   @override
   void dispose() {
     _cntBranch.dispose();
+    _cntPayType.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -85,7 +91,54 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
             ),
           ),
           /// SELECT PAYMENT TYPE
+          Container(
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.black.withAlpha(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ///title
+                      Text(
+                        'Ödəniş tipini seçin',
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 16),
+                      ),
+                      SizedBox(height: 10,),
+                      Row(
+                        children: [
+                          Expanded(child: DropDownFormField(title: 'Tip:', hint: 'tipi seçin', controller: _cntPayType, map: {"Nağd": 'cash', "Kart": 'card'})),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
           /// PROCEED
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: MbaButton(
+                callback: (){
+                  if(_cntPayType.dropDownValue == null){
+                    UiHelpers.showSnackBar(context: context, title:  'Ödəniş tipini seçin!',);
+                  }else{
+                    if(_cntPayType.dropDownValue!.value == 'cash'){
+                      print('nagd secildi');
+                    }else{
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> CardPaymentPage()));
+                    }
+                  }
+
+                },
+                bgColor: Colors.red, text: 'DAVAM'),
+          )
         ],
       ),
     );

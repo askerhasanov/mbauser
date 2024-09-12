@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mbauser/elements/colors.dart';
-import 'package:mbauser/elements/mbadivider.dart';
 import 'package:mbauser/elements/uiHelpers.dart';
+import 'package:mbauser/pages/views/myCoursePage.dart';
 
 
 class LandingPage extends StatefulWidget {
@@ -60,7 +60,7 @@ class _LandingPageState extends State<LandingPage> {
                                 onPressed: (){
                                   setState(() {
                                     isBeingNotified = !isBeingNotified;
-                                    UiHelpers.showSnackBar(context, isBeingNotified ? "Bildirimlər açıldı" : "Bildirimlər bağlandı");
+                                    UiHelpers.showSnackBar(context: context, title: isBeingNotified ? "Bildirimlər açıldı" : "Bildirimlər bağlandı");
                                   });
                                 },
                                 icon: Icon(
@@ -103,24 +103,32 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                 ),
                 SizedBox(height: 10,),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: MbaColors.red,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ClipOval(
-                            child: Image.asset('images/1.jpeg', height: 40,),
-                          ),
-                          Text('Kursunuza baxın', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
-                          Icon(FontAwesome.chevron_right_solid, color: Colors.white,),
-                        ],
+                GestureDetector(
+                  onTap: (){
+                    ///aktiv kurs yoxsa
+                    //elave edilmeyib!
+                    /// eger aktiv kurs varsa
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyCoursePage()));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: MbaColors.red,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ClipOval(
+                              child: Image.asset('images/1.jpeg', height: 40,),
+                            ),
+                            Text('Kursunuza baxın', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
+                            Icon(FontAwesome.chevron_right_solid, color: Colors.white,),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -230,9 +238,9 @@ class _LandingPageState extends State<LandingPage> {
 
 class MbaCircularButton extends StatelessWidget{
 
-  VoidCallback callback;
-  IconData icon;
-  String name;
+  final VoidCallback callback;
+  final IconData icon;
+  final String name;
 
    MbaCircularButton({
     super.key,

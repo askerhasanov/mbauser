@@ -17,7 +17,7 @@ class pageHeader extends StatelessWidget {
       color: MbaColors.red,
       child: Padding(
         padding:
-        EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
+        EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
         child: Center(
           child: Text(
             text,

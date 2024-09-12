@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mbauser/pages/views/courses.dart';
 import 'package:mbauser/pages/views/landingPage.dart';
+import 'package:mbauser/pages/views/posts.dart';
 
 import '../../elements/colors.dart';
 
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     LandingPage(),
     CoursesPage(),
-    Text('Home Page'),
+    PostsPage(),
     Text('Search Page'),
     Text('Profile Page'),
   ];
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MbaColors.light,
+      backgroundColor: MbaColors.red,
       body: SafeArea(
           child: _widgetOptions.elementAt(_selectedIndex)
       ),

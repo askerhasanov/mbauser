@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mbauser/auth/views/register.dart';
-import 'package:mbauser/elements/colors.dart';
-
 import '../../elements/mbabutton.dart';
 import '../../elements/mbadivider.dart';
 import '../../elements/uiHelpers.dart';
@@ -17,16 +15,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin{
 
-  TabController? _tabController;
   bool _remindMe = false;
   bool _obscureText = true;
 
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +97,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(shape: CircleBorder()),
                           onPressed: (){
-                            UiHelpers.showSnackBar(context, 'Google login gelecekde elave edilecekdir.');
+                            UiHelpers.showSnackBar(context: context, title: 'Google login gelecekde elave edilecekdir.');
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -114,7 +107,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(shape: CircleBorder()),
                           onPressed: (){
-                            UiHelpers.showSnackBar(context, 'Apple login gelecekde elave edilecekdir.');
+                            UiHelpers.showSnackBar(context: context, title: 'Apple login gelecekde elave edilecekdir.');
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
