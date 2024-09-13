@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mbauser/pages/views/courses.dart';
+import 'package:mbauser/pages/views/garage.dart';
 import 'package:mbauser/pages/views/landingPage.dart';
 import 'package:mbauser/pages/views/posts.dart';
 
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     LandingPage(),
     CoursesPage(),
     PostsPage(),
-    Text('Search Page'),
+    GaragePage(),
     Text('Profile Page'),
   ];
 

@@ -23,124 +23,120 @@ class _CourseDetailsState extends State<CourseDetails> with TickerProviderStateM
         children: [
           ///
           SingleChildScrollView(
-            child: Container(
-              child: Column(
-                children: [
-
-                  ///header
-                  pageHeader(text: 'Kurs haqqında'),
-
-
-                  ///image
-                  SizedBox(height:300, width: double.infinity, child: Image.asset('images/1.jpeg', fit: BoxFit.cover,)),
-
-                  ///body
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Container(
-                      child: Column(
+            child: Column(
+              children: [
+            
+                ///header
+                const pageHeader(text: 'Kurs haqqında'),
+            
+            
+                ///image
+                SizedBox(height:300, width: double.infinity, child: Image.asset('images/1.jpeg', fit: BoxFit.cover,)),
+            
+                ///body
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10,),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(height: 10,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Kursun adi', style: TextStyle(color: MbaColors.red, fontWeight: FontWeight.bold, fontSize: 20),),
-                              Text('qiymet'),
-                            ],
-                          ),
-                          SizedBox(height: 10,),
-                          Container(
-                            height: 30,
-                            child: TabBar(
-                              unselectedLabelColor: Colors.black,
-                              labelColor: Colors.white,
-                              dividerColor: Colors.transparent,
-                              indicatorPadding: EdgeInsets.zero,
-                              labelPadding: EdgeInsets.zero,
-                              indicator: const BoxDecoration(
-                                  color: MbaColors.red,
-                                  borderRadius: BorderRadius.all(Radius.circular(20))
-                              ),
-                              controller: firstPageController,
-                              tabs: [
-                                Tab(
-                                  height: 30,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(FontAwesome.list_ul_solid, size: 15,),
-                                      SizedBox(width: 10,),
-                                      Text('Dərslər'),
-                                    ],
-                                  ),
-                                ),
-                                Tab(
-                                  height: 30,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(FontAwesome.book_open_solid, size: 15,),
-                                      SizedBox(width: 10,),
-                                      Text('Haqqında'),
-                                    ],
-                                  ),
-                                ),
-                                Tab(
-                                  height: 30,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(FontAwesome.comments_solid, size: 15,),
-                                      SizedBox(width: 10,),
-                                      Text('Fikirlər'),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 500,
-                            child: TabBarView(
-                              controller: firstPageController,
-                              children: [
-                                // Topics Tab
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: topics.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: Text(topics[index]),
-                                    );
-                                  },
-                                ),
-                                // About Tab
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    'This is a paragraph about the course. You can provide detailed information about the course content, instructors, and target audience here.',
-                                  ),
-                                ),
-                                // Reviews Tab
-                                ListView.builder(
-                                  itemCount: reviews.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: Text(reviews[index].name),
-                                      subtitle: Text(reviews[index].review),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
+                          Text('Kursun adi', style: TextStyle(color: MbaColors.red, fontWeight: FontWeight.bold, fontSize: 20),),
+                          Text('qiymet'),
                         ],
                       ),
-                    ),
-                  )
-                ],
-              ),
+                      const SizedBox(height: 10,),
+                      SizedBox(
+                        height: 30,
+                        child: TabBar(
+                          unselectedLabelColor: Colors.black,
+                          labelColor: Colors.white,
+                          dividerColor: Colors.transparent,
+                          indicatorPadding: EdgeInsets.zero,
+                          labelPadding: EdgeInsets.zero,
+                          indicator: const BoxDecoration(
+                              color: MbaColors.red,
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          controller: firstPageController,
+                          tabs: const [
+                            Tab(
+                              height: 30,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(FontAwesome.list_ul_solid, size: 15,),
+                                  SizedBox(width: 10,),
+                                  Text('Dərslər'),
+                                ],
+                              ),
+                            ),
+                            Tab(
+                              height: 30,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(FontAwesome.book_open_solid, size: 15,),
+                                  SizedBox(width: 10,),
+                                  Text('Haqqında'),
+                                ],
+                              ),
+                            ),
+                            Tab(
+                              height: 30,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(FontAwesome.comments_solid, size: 15,),
+                                  SizedBox(width: 10,),
+                                  Text('Fikirlər'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 500,
+                        child: TabBarView(
+                          controller: firstPageController,
+                          children: [
+                            // Topics Tab
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: topics.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  title: Text(topics[index]),
+                                );
+                              },
+                            ),
+                            // About Tab
+                            const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Text(
+                                'This is a paragraph about the course. You can provide detailed information about the course content, instructors, and target audience here.',
+                              ),
+                            ),
+                            // Reviews Tab
+                            ListView.builder(
+                              itemCount: reviews.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  title: Text(reviews[index].name),
+                                  subtitle: Text(reviews[index].review),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
           ///button,
@@ -152,7 +148,7 @@ class _CourseDetailsState extends State<CourseDetails> with TickerProviderStateM
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: MbaButton(callback: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => JoinCoursePage(courseId: 'asdasdasd',)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const JoinCoursePage(courseId: 'asdasdasd',)));
                 }, bgColor: MbaColors.red, text: 'Qoşul'),
               )
           ),

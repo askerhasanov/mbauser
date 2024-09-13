@@ -17,7 +17,7 @@ List<DropDownValueModel> dropdownListFromMap(Map<String, String> map) {
   if (map.isNotEmpty) {
     return map.entries.map((entry) => DropDownValueModel(name: entry.key, value: entry.value)).toList();
   } else {
-    return [DropDownValueModel(name: '', value: '')];
+    return [const DropDownValueModel(name: '', value: '')];
   }
 }
 
@@ -29,7 +29,7 @@ class _DropDownFormFieldState extends State<DropDownFormField> {
       children: [
         Text(
           widget.title,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           height: 5,
@@ -70,7 +70,7 @@ class _DropDownFormFieldState extends State<DropDownFormField> {
           dropDownList: dropdownListFromMap(widget.map),
           onChanged: (val) {},
         ),
-        SizedBox(height: 5,),
+        const SizedBox(height: 5,),
       ],
     );
   }

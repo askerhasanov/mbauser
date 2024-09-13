@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mbauser/elements/colors.dart';
 
 
@@ -12,11 +11,11 @@ class SurveyScreen extends StatefulWidget {
   final String text;
 
   const SurveyScreen({
-    Key? key,
+    super.key,
     required this.imageSrc,
     required this.header,
     required this.text
-  }) : super(key: key);
+  });
 
   @override
   State<SurveyScreen> createState() => _SurveyScreen1State();
@@ -31,9 +30,9 @@ class _SurveyScreen1State extends State<SurveyScreen> {
         child: Column(
           children: [
             Expanded(child: Image.asset(widget.imageSrc, height: 300, width: 300,)),
-            SizedBox(height: 60,),
+            const SizedBox(height: 60,),
             Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: MbaColors.red,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight:Radius.circular(10)),
                 ),
@@ -42,10 +41,10 @@ class _SurveyScreen1State extends State<SurveyScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 20,),
-                      Text(widget.header, style: TextStyle(fontSize: 25, fontWeight:FontWeight.bold ,color: Colors.white),),
-                      SizedBox(height: 20,),
-                      Text(widget.text, textAlign:TextAlign.center,style: TextStyle(fontSize: 16, color: Colors.white),),
+                      const SizedBox(height: 20,),
+                      Text(widget.header, style: const TextStyle(fontSize: 25, fontWeight:FontWeight.bold ,color: Colors.white),),
+                      const SizedBox(height: 20,),
+                      Text(widget.text, textAlign:TextAlign.center,style: const TextStyle(fontSize: 16, color: Colors.white),),
                     ],),
                 )
             ),

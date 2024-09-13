@@ -1,14 +1,10 @@
 import 'dart:async';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:mbauser/elements/colors.dart';
 import 'package:mbauser/elements/mbabutton.dart';
-import 'package:mbauser/elements/uiHelpers.dart';
+import 'package:mbauser/pages/views/homepage.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
-
-import '../../pages/views/homepage.dart';
 
 
 class VerifyPhonePage extends StatefulWidget {
@@ -41,11 +37,8 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
     });
   }
 
-
   final OtpFieldController _otpController = OtpFieldController();
   String otp = '';
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +53,13 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 50,),
+                  const SizedBox(height: 50,),
                   RichText(
                     textAlign: TextAlign.center,
-                    text: TextSpan(
+                    text: const TextSpan(
                       text: '+994 50 562 6565',
-                      style: const TextStyle(fontFamily: 'Spark-Bold', color: Colors.black, fontSize: 16),
-                      children: const [
+                      style: TextStyle(fontFamily: 'Spark-Bold', color: Colors.black, fontSize: 16),
+                      children: [
                         TextSpan(
                           text: '  nömrəsinə təsdiq mesajı göndərilmişdir! Zəhmət olmazsa mesajdakı 6 rəqəmli kodu daxil edin.',
                           style: TextStyle(fontFamily: 'Spark-Medium', color: Colors.grey, fontSize: 14),
@@ -86,7 +79,6 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                       outlineBorderRadius: 15,
                       style: const TextStyle(fontSize: 17),
                       onChanged: (pin) {
-                        print("Changed: $pin");
                       },
                       onCompleted: (pin) {
                         setState(() {

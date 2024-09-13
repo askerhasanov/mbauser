@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mbauser/auth/views/verifyPhone.dart';
 import 'package:mbauser/elements/mbabutton.dart';
+import 'package:mbauser/elements/uiHelpers.dart';
 
 import '../../elements/dropDownFormField.dart';
 import 'login.dart';
@@ -12,7 +13,7 @@ import 'login.dart';
 class RegisterNextPage extends StatefulWidget {
   const RegisterNextPage({super.key});
 
-  static final String id = 'register';
+  static const String id = 'register';
 
   @override
   State<RegisterNextPage> createState() => _RegisterNextPageState();
@@ -35,7 +36,6 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
   void initState() {
     _cntGender = SingleValueDropDownController();
     _cntFind = SingleValueDropDownController();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -56,12 +56,11 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
     );
     if(pickedDate != null ){
       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
-      print(formattedDate);
       setState(() {
         birthDate.text = formattedDate;
       });
     }else{
-      print("Date is not selected");
+      UiHelpers.showSnackBar(context: context, title: 'Tarix seçilməyib');
     }
   }
 
@@ -76,8 +75,8 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children:[
-                    SizedBox(height: 50,),
-                    Column(
+                    const SizedBox(height: 50,),
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 10,),
@@ -90,24 +89,24 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    const SizedBox(height: 20,),
                     formField(birthDate, 'Doğum tarixiniz', 'gun-ay-il', false, _selectDate),
                     formField(profession, 'Peşəniz', 'işiniz', false, null),
-                    DropDownFormField(title: 'Cinsiniz', hint: 'seçin', controller: _cntGender, map: {'kisi' : 'man', 'qadin' : 'woman', 'diger': 'other'}),
-                    DropDownFormField(title: 'Haradan öyrənmisiniz', hint: 'seçin', controller: _cntFind, map: {'Sosial şəbəkədən' : 'social', 'Reklamlardan' : 'adds', 'Şəxsi tövsiyyə': 'offer', 'Özüm axtarmışam': 'search', 'digər': 'other', }),
-                    SizedBox(height: 20,),
+                    DropDownFormField(title: 'Cinsiniz', hint: 'seçin', controller: _cntGender, map: const {'kisi' : 'man', 'qadin' : 'woman', 'diger': 'other'}),
+                    DropDownFormField(title: 'Haradan öyrənmisiniz', hint: 'seçin', controller: _cntFind, map: const {'Sosial şəbəkədən' : 'social', 'Reklamlardan' : 'adds', 'Şəxsi tövsiyyə': 'offer', 'Özüm axtarmışam': 'search', 'digər': 'other', }),
+                    const SizedBox(height: 20,),
                     MbaButton(callback: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPhonePage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const VerifyPhonePage()));
                     }, bgColor: Colors.red, text: 'Next'),
                     //donthaveaccount
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Hesabınız var?'),
+                        const Text('Hesabınız var?'),
                         TextButton(
                             onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
-                            }, child: Text('Giris edin')),
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
+                            }, child: const Text('Giris edin')),
                       ],
                     )
                   ]
@@ -128,14 +127,14 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
           ),
         ),
-        Container(
+        SizedBox(
           height: 40,
           child: TextField(
             controller: controller,
@@ -143,13 +142,13 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
             cursorColor: Colors.red,
             decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: TextStyle(
+                hintStyle: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                         color: Colors.red,
                         width: 1,
                         style: BorderStyle.solid
@@ -160,7 +159,7 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
             onTap: onTap ?? (){},
           ),
         ),
-        SizedBox(height: 5,),
+        const SizedBox(height: 5,),
       ],
     );
   }

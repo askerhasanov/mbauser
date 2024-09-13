@@ -5,7 +5,6 @@ import 'package:mbauser/elements/colors.dart';
 import 'package:mbauser/firebase_options.dart';
 import 'package:mbauser/providers/mbaProvider.dart';
 import 'package:provider/provider.dart';
-
 import 'auth/views/selectEntry.dart';
 import 'entrance/walktrough.dart';
 
@@ -16,12 +15,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
-
-
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -34,9 +28,9 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         routes: {
-          SelectEntryPage.id : (context) => SelectEntryPage(),
-          WalkThroughPage.id : (context) => WalkThroughPage(),
-          RegisterPage.id : (context) => RegisterPage()
+          SelectEntryPage.id : (context) => const SelectEntryPage(),
+          WalkThroughPage.id : (context) => const WalkThroughPage(),
+          RegisterPage.id : (context) => const RegisterPage()
         },
         initialRoute: WalkThroughPage.id,
       ),

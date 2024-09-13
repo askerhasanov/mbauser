@@ -16,24 +16,24 @@ class MbaButtonOutline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-        onPressed: this.callback,
+        onPressed: callback,
         style: OutlinedButton.styleFrom(
             backgroundColor: Colors.transparent,
             surfaceTintColor: Colors.black,
             foregroundColor: Colors.black,
             side: BorderSide(
-                color: this.lineColor,
+                color: lineColor,
                 width: 1,
                 style: BorderStyle.solid
             ),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
 
             )
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Container(width: double.maxFinite, child: Text(this.text, style: TextStyle(color: this.lineColor, fontSize: 20), textAlign: TextAlign.center,)),
+          child: SizedBox(width: double.maxFinite, child: Text(text, style: TextStyle(color: lineColor, fontSize: 20), textAlign: TextAlign.center,)),
         ));
   }
 }

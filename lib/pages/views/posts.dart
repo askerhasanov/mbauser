@@ -1,5 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:intl/intl.dart';
 import 'package:mbauser/elements/colors.dart';
 import '../../elements/pageheader.dart';
 import '../../models/event.dart';
@@ -54,14 +56,14 @@ class _PostsPageState extends State<PostsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.white,
+        color: MbaColors.light,
         child: Column(
           children: [
             // Header
-            pageHeader(text: 'Yeniliklər'),
+            const pageHeader(text: 'Yeniliklər'),
             Expanded(
               child: _posts.isEmpty
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
                   : ListView.builder(
                 itemCount: _posts.length,
                 itemBuilder: (context, index) {
@@ -69,10 +71,7 @@ class _PostsPageState extends State<PostsPage> {
                   if (post is News) {
                     return NewsTile(news: post);
                   } else if (post is Event) {
-                    return ListTile(
-                      title: Text('Event: ' + post.title),
-                      subtitle: Text('${post.about}\nLocation: ${post.date}\nTime: ${post.price}'),
-                    );
+                    return EventTile(event: post);
                   }
                   return Container();
                 },
@@ -95,18 +94,17 @@ class NewsTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
             color: Colors.white,
-            border: Border.all(
-                color: MbaColors.red, width: 1, style: BorderStyle.solid)),
+        ),
         child: Stack(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(10),
                     topLeft: Radius.circular(10),
                   ),
@@ -119,53 +117,55 @@ class NewsTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(10))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                news.title,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    color: MbaColors.black),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(10))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  news.title,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: MbaColors.red),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 4),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: MbaColors.red,
-                          borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(10))),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 4.0, right: 4, top: 4, bottom: 10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                news.text,
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
+                      const SizedBox(height: 4),
+                      Container(
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.vertical(
+                                bottom: Radius.circular(10))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 4.0, right: 4, top: 4, bottom: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  news.text,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.black),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -176,13 +176,195 @@ class NewsTile extends StatelessWidget {
                 child: Container(
                   height: 40,
                   width: 40,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: MbaColors.red,
                       borderRadius:
                           BorderRadius.vertical(bottom: Radius.circular(5))),
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.newspaper,
+                      color: Colors.white,
+                    ),
+                  ),
+                ))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class EventTile extends StatefulWidget {
+  final Event event;
+
+  const EventTile({super.key, required this.event});
+
+  @override
+  State<EventTile> createState() => _EventTileState();
+}
+
+class _EventTileState extends State<EventTile> {
+
+  bool isFaved = false;
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: Colors.white,
+        ),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    topLeft: Radius.circular(10),
+                  ),
+                  child: SizedBox(
+                    height: 200,
+                    width: double.infinity,
+                    child: Image.network(
+                      widget.event.image,
+                      fit: BoxFit.cover, // Stretch image to cover the container
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                            borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(10))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            children: [
+                              //title and fav
+                              Expanded(
+                                child: Text(
+                                  widget.event.title,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: MbaColors.black),
+                                ),
+                              ),
+                              SizedBox(width: 40,
+                              child: IconButton(
+                                onPressed: (){
+                                  setState(() {
+                                    isFaved = !isFaved;
+                                  });
+                                },
+                                icon: Icon(isFaved ? FontAwesome.heart_solid : FontAwesome.heart, color: MbaColors.red,),
+                              ),)
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.vertical(bottom: Radius.circular(10))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 4.0, right: 4, top: 4, bottom: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  widget.event.about,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.black),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(bottom: Radius.circular(10))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    const Icon(FontAwesome.calendar, color: MbaColors.red,),
+                                    const SizedBox(width: 10,),
+                                    Text(
+                                      DateFormat('dd, MMM, yy').format(DateTime.parse(widget.event.date)),
+                                      style: const TextStyle(
+                                          fontSize: 14, color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    const Icon(FontAwesome.clock, color: MbaColors.red,),
+                                    const SizedBox(width: 10,),
+                                    Text(
+                                      DateFormat('HH:mm').format(DateTime.parse(widget.event.date)),
+                                      style: const TextStyle(
+                                          fontSize: 14, color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: MbaColors.red,
+                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      const Icon(Bootstrap.ticket, color: Colors.white,),
+                                      const SizedBox(width: 10,),
+                                      Text(widget.event.isPayed ? widget.event.price : 'Pulsuz', style: const TextStyle(color: Colors.white),),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            //badge
+            Positioned(
+                right: 10,
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  decoration: const BoxDecoration(
+                      color: MbaColors.red,
+                      borderRadius:
+                      BorderRadius.vertical(bottom: Radius.circular(5))),
+                  child: const Center(
+                    child: Icon(
+                      Icons.calendar_month,
                       color: Colors.white,
                     ),
                   ),

@@ -16,17 +16,17 @@ class MbaButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: this.callback,
+        onPressed: callback,
         style: ElevatedButton.styleFrom(
-            backgroundColor: this.bgColor,
+            backgroundColor: bgColor,
             foregroundColor: Colors.red,
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10))
             )
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Container(width: double.maxFinite, child: Text(this.text, style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,)),
+          child: SizedBox(width: double.maxFinite, child: Text(text, style: const TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,)),
         ));
   }
 }

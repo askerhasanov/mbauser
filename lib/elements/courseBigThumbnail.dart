@@ -19,18 +19,18 @@ class CourseBigThumbnail extends StatelessWidget {
     return GestureDetector(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10.0),
-        child: Container(
+        child: SizedBox(
           height: 180,
           child: Row(
             children: [
               SizedBox(
                 height: 180,
                 width: 150,
-                child: Image.asset(this.data.image, fit: BoxFit.cover,),
+                child: Image.asset(data.image, fit: BoxFit.cover,),
               ),
               Expanded(
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.horizontal(right: Radius.circular(10)),
                       color: MbaColors.red,
                     ),
@@ -42,10 +42,10 @@ class CourseBigThumbnail extends StatelessWidget {
                           ///title
                           Row(
                             children: [
-                              Text(this.data.name, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),),
+                              Text(data.name, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),),
                             ],
                           ),
-                          SizedBox(height: 10,),
+                          const SizedBox(height: 10,),
                           ///icons
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -53,54 +53,50 @@ class CourseBigThumbnail extends StatelessWidget {
                               SizedBox(height: 60,
                                 child: Column(
                                   children: [
-                                    Icon(Icons.play_lesson),
-                                    SizedBox(height: 5,),
-                                    Text('${this.data.lessons} dərs'),
+                                    const Icon(Icons.play_lesson),
+                                    const SizedBox(height: 5,),
+                                    Text('${data.lessons} dərs'),
                                   ],
                                 ),
                               ),
                               SizedBox(height: 60,
                                 child: Column(
                                   children: [
-                                    Icon(FontAwesome.calendar_check_solid),
-                                    SizedBox(height: 5,),
-                                    Text('${this.data.days} gün'),
+                                    const Icon(FontAwesome.calendar_check_solid),
+                                    const SizedBox(height: 5,),
+                                    Text('${data.days} gün'),
                                   ],
                                 ),
                               ),
                               SizedBox(height: 60,
                                 child: Column(
                                   children: [
-                                    Icon(Icons.ballot_outlined),
-                                    SizedBox(height: 5,),
-                                    Text('${this.data.exams} test'),
+                                    const Icon(Icons.ballot_outlined),
+                                    const SizedBox(height: 5,),
+                                    Text('${data.exams} test'),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 10,),
+                          const SizedBox(height: 10,),
                           ///rating and price
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.star),
-                                    SizedBox(width: 5,),
-                                    Text(this.data.rating),
-                                  ],
-                                ),
+                              Row(
+                                children: [
+                                  const Icon(Icons.star),
+                                  const SizedBox(width: 5,),
+                                  Text(data.rating),
+                                ],
                               ),
-                              Container(
-                                child: Row(
-                                  children: [
-                                    Icon(FontAwesome.money_bill_solid, color: Colors.white,),
-                                    SizedBox(width: 5,),
-                                    Text('₼ ${this.data.price}'),
-                                  ],
-                                ),
+                              Row(
+                                children: [
+                                  const Icon(FontAwesome.money_bill_solid, color: Colors.white,),
+                                  const SizedBox(width: 5,),
+                                  Text('₼ ${data.price}'),
+                                ],
                               )
                             ],
                           )

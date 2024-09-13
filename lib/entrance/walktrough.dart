@@ -9,7 +9,7 @@ import '../auth/views/selectEntry.dart';
 class WalkThroughPage extends StatefulWidget {
   const WalkThroughPage({super.key});
 
-  static final String id = 'walkthrough';
+  static const String id = 'walkthrough';
 
   @override
   State<WalkThroughPage> createState() => _WalkThroughPageState();
@@ -25,17 +25,17 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
   }
 
   final List<Widget> pagesList = [
-    SurveyScreen(
+    const SurveyScreen(
         header: 'TƏCRÜBƏLİ MÜƏLLİMLƏR',
         imageSrc: 'images/1.jpeg',
         text: 'Öz sahələrində kifayət qədər təcrübəyə malik olan, illərdir tələbələri öyrədən müəllimlərdən dərs alın!'
     ),
-    SurveyScreen(
+    const SurveyScreen(
         header: 'ASAN ÖYRƏTMƏ',
         imageSrc: 'images/2.jpeg',
         text: 'Müxtəlif həcmdə mühərriklərə malik olan motosikletləri kiçikdən böyüyə real fərdi məşq edərək öyrənin!'
     ),
-    SurveyScreen(
+    const SurveyScreen(
         header: 'SƏRBƏST QRAFiK',
         imageSrc: 'images/3.jpeg',
         text: 'Həftənin 7 günü hər gün saat 09 00 -dan 20 00 - dək sizə uyğun bir saatı öncədən seçərək təlimdə iştirak edin!'
@@ -46,7 +46,7 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MbaColors.light,
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -55,7 +55,7 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
               child: PageView.builder(
                 controller: controller,
                 itemCount: 3,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (int page) {
                   setState(() {
                     currentPage = page;
@@ -76,7 +76,7 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SizedBox(width: 60,),
+            const SizedBox(width: 60,),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -97,21 +97,21 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
             IconButton(
                 onPressed: (){
                   if(currentPage != 2){
-                    controller.nextPage(duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                    controller.nextPage(duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
                   }else{
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SelectEntryPage()));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SelectEntryPage()));
                   }
                   
                 },
                 style: IconButton.styleFrom(
                   backgroundColor: MbaColors.lightRed,
                 ),
-                icon: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                icon: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Icon(FontAwesome.chevron_right_solid, color: Colors.white,),
                 )
             ),
-            SizedBox(width: 30,),
+            const SizedBox(width: 30,),
           ],
         ),
       ),

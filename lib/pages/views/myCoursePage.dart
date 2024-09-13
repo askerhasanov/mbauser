@@ -26,10 +26,10 @@ class _MyCoursePageState extends State<MyCoursePage> {
       body: SafeArea(
        child: Column(
          children: [
-           pageHeader(text: 'Kursum'),
+           const pageHeader(text: 'Kursum'),
 
            Padding(
-               padding: EdgeInsets.all(10),
+               padding: const EdgeInsets.all(10),
              child: Padding(
                padding: const EdgeInsets.only(top: 40.0),
                child: Stack(
@@ -44,7 +44,7 @@ class _MyCoursePageState extends State<MyCoursePage> {
                        padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
                        child: Container(
                          padding: const EdgeInsets.all(10),
-                         decoration: BoxDecoration(
+                         decoration: const BoxDecoration(
                            color: MbaColors.lightRed,
                            borderRadius: BorderRadius.all(Radius.circular(10)),
                          ),
@@ -61,14 +61,14 @@ class _MyCoursePageState extends State<MyCoursePage> {
                                         //dersler
                                         Column(
                                           children: [
-                                            Row(
+                                            const Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 SizedBox(width: 120,child: Text('Dərslər:', style: TextStyle(color: MbaColors.darkRed, fontSize: 18, fontWeight: FontWeight.bold),)),
                                                 Text('12/14', style: TextStyle(color: MbaColors.darkRed, fontSize: 18, fontWeight: FontWeight.bold),),
                                               ],
                                             ),
-                                            SizedBox(height: 10,),
+                                            const SizedBox(height: 10,),
                                             Row(
                                               children: [
                                                 Expanded(child: LinearProgressIndicator( borderRadius: BorderRadius.circular(10), minHeight: 10, value: 12/14, backgroundColor: Colors.white, color: MbaColors.darkRed,))
@@ -76,9 +76,9 @@ class _MyCoursePageState extends State<MyCoursePage> {
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 10,),
+                                        const SizedBox(height: 10,),
                                         //next lesson
-                                        Row(
+                                        const Row(
                                           children: [
                                             SizedBox(width: 120,child: Text('Növbəti dərs:', style: TextStyle(color: MbaColors.darkRed, fontSize: 18, fontWeight: FontWeight.bold),)),
                                             Expanded(
@@ -92,9 +92,9 @@ class _MyCoursePageState extends State<MyCoursePage> {
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 10,),
+                                        const SizedBox(height: 10,),
                                         //filial
-                                        Row(
+                                        const Row(
                                           children: [
                                             SizedBox(width: 120,child: Text('Filial:', style: TextStyle(color: MbaColors.darkRed, fontSize: 18, fontWeight: FontWeight.bold),)),
                                             Expanded(
@@ -110,28 +110,28 @@ class _MyCoursePageState extends State<MyCoursePage> {
                                             Expanded(child: Text('', style: TextStyle(color: Colors.white, fontSize: 16,),)),
                                           ],
                                         ),
-                                        SizedBox(height: 10,),
+                                        const SizedBox(height: 10,),
                                         //rezervasiya
                                         Row(
                                           children: [
-                                            SizedBox(width: 120,child: Text('Rezervasiya:', style: TextStyle(color: MbaColors.darkRed, fontSize: 18, fontWeight: FontWeight.bold),)),
+                                            const SizedBox(width: 120,child: Text('Rezervasiya:', style: TextStyle(color: MbaColors.darkRed, fontSize: 18, fontWeight: FontWeight.bold),)),
                                             Expanded(
                                               child: Row(
                                                 children: [
-                                                  Icon(FontAwesome.calendar_check, color: MbaColors.red,),
-                                                  SizedBox(width: 10,),
+                                                  const Icon(FontAwesome.calendar_check, color: MbaColors.red,),
+                                                  const SizedBox(width: 10,),
                                                   Consumer<MBAProvider>(
                                                     builder: (_, state, __){
                                                       return Expanded(
                                                           child: Row(
                                                             children: [
-                                                              Expanded(child: Text(isReserved ? state.finalDate.toString() : 'Seçilməyib', style: TextStyle(color: Colors.white, fontSize: 16,),)),
+                                                              Expanded(child: Text(isReserved ? state.finalDate.toString() : 'Seçilməyib', style: const TextStyle(color: Colors.white, fontSize: 16,),)),
                                                               ElevatedButton(
                                                                   onPressed: isReserved ? () => _cancelReservation(state.finalDate.toString()) : () => _selectReservationDate(),
                                                                   child: Row(
                                                                     children: [
                                                                       Icon(isReserved ? FontAwesome.x_solid : FontAwesome.calendar),
-                                                                      SizedBox(width: 10,),
+                                                                      const SizedBox(width: 10,),
                                                                       Text(isReserved ? 'Ləğv et' : 'Seç'),
                                                                     ],
                                                                   )
@@ -153,7 +153,7 @@ class _MyCoursePageState extends State<MyCoursePage> {
                               ),
                              //
                              //
-                             SizedBox(height: 10,),
+                             const SizedBox(height: 10,),
 
                              //Novbeti ders
                            ],
@@ -165,15 +165,15 @@ class _MyCoursePageState extends State<MyCoursePage> {
                        top: -30,
                        left: 30,
                        child: Container(
-                         constraints: BoxConstraints(
+                         constraints: const BoxConstraints(
                            maxWidth: 200,
                          ),
-                         decoration: BoxDecoration(
+                         decoration: const BoxDecoration(
                            color: MbaColors.light,
                            borderRadius: BorderRadius.all(Radius.circular(50)),
                          ),
-                         child: Padding(
-                           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                         child: const Padding(
+                           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
                            child: SizedBox(
                              height: 40,
                              child: Row(
@@ -192,12 +192,12 @@ class _MyCoursePageState extends State<MyCoursePage> {
                        top: -20,
                        right: 20,
                        child: Container(
-                         decoration: BoxDecoration(
+                         decoration: const BoxDecoration(
                            color: Colors.green,
                            shape: BoxShape.circle,
                          ),
-                         child: Padding(
-                           padding: const EdgeInsets.all(10.0),
+                         child: const Padding(
+                           padding: EdgeInsets.all(10.0),
                            child: Row(
                              mainAxisAlignment: MainAxisAlignment.center,
                              children: [
@@ -228,7 +228,7 @@ class _MyCoursePageState extends State<MyCoursePage> {
                  UiHelpers.showSnackBar(context: context, title: 'Göstərilən tarix və saatda yerlər dolmuşdur.', color: MbaColors.red);
                }
              },
-             child: Text('Reserve'),
+             child: const Text('Reserve'),
            ),
          ],
        ),
@@ -243,14 +243,14 @@ class _MyCoursePageState extends State<MyCoursePage> {
     } else {
       var response = await _showYesNoDialog();
       if (response == 'yes') {
-        print('yes selected');
+        
         setState(() {
           isReserved = false;
           Provider.of<MBAProvider>(context, listen: false).finalDate = null;
         });
         // Here you can add the logic to actually cancel the reservation
       } else {
-        print('no selected');
+        
       }
     }
   }
@@ -268,8 +268,8 @@ class _MyCoursePageState extends State<MyCoursePage> {
       barrierDismissible: false, // User must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Təsdiq'),
-          content: SingleChildScrollView(
+          title: const Text('Təsdiq'),
+          content: const SingleChildScrollView(
             child: ListBody(
               children:<Widget>[
                 Text('Dərsin başlamasına bir saatdan artıq vaxt qalmışdır. Yenə də ləğv etmək istəyirsinizmi?'),
@@ -278,13 +278,13 @@ class _MyCoursePageState extends State<MyCoursePage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Xeyr'),
+              child: const Text('Xeyr'),
               onPressed: () {
                 Navigator.of(context).pop('no'); // Close the dialog
               },
             ),
             TextButton(
-              child: Text('Bəli'),
+              child: const Text('Bəli'),
               onPressed: () {
                 // Handle Yes action
                 Navigator.of(context).pop('yes'); // Close the dialog
@@ -302,8 +302,8 @@ class _MyCoursePageState extends State<MyCoursePage> {
         context: context,
         builder: (context){
           return AlertDialog(
-            title: Text('Rezervasiya vaxtını seçin'),
-            content: Container(
+            title: const Text('Rezervasiya vaxtını seçin'),
+            content: SizedBox(
               height: 500,
               width: double.maxFinite,
               child: Column(
@@ -319,9 +319,9 @@ class _MyCoursePageState extends State<MyCoursePage> {
                               _presentDatePicker();
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
                                     color: MbaColors.red,
                                     width: 2,
@@ -339,9 +339,9 @@ class _MyCoursePageState extends State<MyCoursePage> {
                               _presentTimePicker();
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
                                     color: MbaColors.red,
                                     width: 2,
@@ -364,25 +364,25 @@ class _MyCoursePageState extends State<MyCoursePage> {
                   Row(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: MbaColors.red
                         ),
                         height: 50,
                         width: 50,
-                        child: Center(child: Text('Dolu')),
+                        child: const Center(child: Text('Dolu')),
                       ),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                         ),
-                        child: Text('Boş'),
+                        child: const Text('Boş'),
                       ),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                         ),
-                        child: Text('Boş'),
+                        child: const Text('Boş'),
                       ),
                     ]
                   ),
@@ -412,23 +412,23 @@ class _MyCoursePageState extends State<MyCoursePage> {
   _presentTimePicker() {
     showDialog(
       context: context,
-      builder: (BuildContextcontext) {
+      builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Saatı seçin'),
-          content: Container(
+          title: const Text('Saatı seçin'),
+          content: SizedBox(
             width: double.maxFinite, // Set the width here
             height: 300, // Set the height here
             child: _buildTimeList(),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('İmtina'),
+              child: const Text('İmtina'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Təsdiq'),
+              child: const Text('Təsdiq'),
               onPressed: () {
                 if (Provider.of<MBAProvider>(context, listen: false).selectedTime != null && Provider.of<MBAProvider>(context, listen: false).selectedDate != null ) {
                   // Combine _selectedDate and _selectedTime
@@ -439,10 +439,7 @@ class _MyCoursePageState extends State<MyCoursePage> {
                     Provider.of<MBAProvider>(context, listen: false).selectedTime!.hour,
                     Provider.of<MBAProvider>(context, listen: false).selectedTime!.minute,
                   );
-                  print(selectedDateTime);
-
-                  /// add reservation dateTime to server
-                  // Handle selected date and time (selectedDateTime)
+                  /// TODO: add reservation dateTime to server
                   Navigator.of(context).pop();
                 }else{
                   Navigator.of(context).pop();
@@ -473,7 +470,7 @@ class _MyCoursePageState extends State<MyCoursePage> {
         ListTile(
           title: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('${hour.toString().padLeft(2, '0')}:00', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
+            child: Text('${hour.toString().padLeft(2, '0')}:00', style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
           ),
           onTap: () {
             Provider.of<MBAProvider>(context, listen: false).selectTime(TimeOfDay(hour: hour, minute: 00));
@@ -482,7 +479,7 @@ class _MyCoursePageState extends State<MyCoursePage> {
       );
     }
     return GridView(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3, // Number of columns
         childAspectRatio: 2.0, // Adjust as needed
       ),

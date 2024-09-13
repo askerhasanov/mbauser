@@ -19,7 +19,7 @@ class _CardPaymentPageState extends State<CardPaymentPage> with SingleTickerProv
   late Animation<double> _curve;
 
   Future<bool> isSucceeded() async {
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 1000));
     return true;
   }
 
@@ -44,7 +44,7 @@ class _CardPaymentPageState extends State<CardPaymentPage> with SingleTickerProv
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Center(
@@ -80,16 +80,16 @@ class _CardPaymentPageState extends State<CardPaymentPage> with SingleTickerProv
                                 ///if true
 
                                 _controller.forward().then((value) async {
-                                  await Future.delayed(Duration(seconds: 1));
+                                  await Future.delayed(const Duration(seconds: 1));
                                   Navigator.pop(context);
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => MyCoursePage(),
+                                        builder: (context) => const MyCoursePage(),
                                       ));
                                 });
 
-                                return Container(
+                                return SizedBox(
                                   height: 200,
                                   child: Center(
                                     child: Column(
@@ -131,10 +131,10 @@ class _CardPaymentPageState extends State<CardPaymentPage> with SingleTickerProv
                               } else {
                                 /// if false
                                 _controller.forward().then((value) async {
-                                  await Future.delayed(Duration(seconds: 1));
+                                  await Future.delayed(const Duration(seconds: 1));
                                   Navigator.pop(context);
                                 });
-                                return Container(
+                                return SizedBox(
                                   height: 200,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -151,7 +151,7 @@ class _CardPaymentPageState extends State<CardPaymentPage> with SingleTickerProv
                                           child: Center(
                                             child: RotationTransition(
                                               turns: _curve,
-                                              child: Icon(
+                                              child: const Icon(
                                                 Icons.error_outline,
                                                 size: 60,
                                                 color: Colors.white,
@@ -184,7 +184,7 @@ class _CardPaymentPageState extends State<CardPaymentPage> with SingleTickerProv
                 },
               );
             },
-            child: Text('Ödə'),
+            child: const Text('Ödə'),
           ),
         ),
       ),

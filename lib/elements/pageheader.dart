@@ -17,11 +17,11 @@ class pageHeader extends StatelessWidget {
       color: MbaColors.red,
       child: Padding(
         padding:
-        EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
+        const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 22),

@@ -10,7 +10,7 @@ import 'login.dart';
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
-  static final String id = 'register';
+  static const String id = 'register';
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -42,8 +42,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children:[
-                    SizedBox(height: 30,),
-                    Column(
+                    const SizedBox(height: 30,),
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Qeydiyyat',
@@ -63,84 +63,82 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20,),
-                    Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          formField(fullName, 'Ad Soyad', 'Adınız, Soyadınız', false),
-                          formField(userName, 'İstifadəçi adı', 'istifadəçiadı', false),
-                          formField(email, 'Email', 'adınız@email.com', false),
-                          // phone number
-                          Text('Telefon Nömrəsi', textAlign: TextAlign.start, style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 5,),
-                          Container(
-                            height: 40,
-                            alignment: Alignment.center,
-                            decoration:  BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                              color: Colors.transparent,
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 1.0,
-                                style: BorderStyle.solid,
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                              child: InternationalPhoneNumberInput(
-                                onInputChanged: (PhoneNumber number) {
-                                  print(number);
-                                },
-                                onInputValidated: (bool value) {
-                                  print(value);
-                                },
-                                textAlignVertical: TextAlignVertical.center,
-                                selectorConfig: const SelectorConfig(
-                                  selectorType: PhoneInputSelectorType.DIALOG,
-                                  setSelectorButtonAsPrefixIcon: true,
-                                  trailingSpace: false,
-                                ),
-                                hintText: 'Telefon Nömrəsi',
-                                ignoreBlank: true,
-                                autoValidateMode: AutovalidateMode.disabled,
-                                textStyle: const TextStyle(color: Colors.black, fontSize: 14,),
-                                selectorTextStyle: const TextStyle(color: Colors.black,),
-                                initialValue: number,
-                                textFieldController: phone,
-                                formatInput: true,
-                                keyboardType:  const TextInputType.numberWithOptions(signed: true, decimal: true),
-                                inputBorder: InputBorder.none,
-                                onSaved: (PhoneNumber number) {
-                                  print('On Saved: $number');
-                                },
-                              ),
+                    const SizedBox(height: 20,),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        formField(fullName, 'Ad Soyad', 'Adınız, Soyadınız', false),
+                        formField(userName, 'İstifadəçi adı', 'istifadəçiadı', false),
+                        formField(email, 'Email', 'adınız@email.com', false),
+                        // phone number
+                        const Text('Telefon Nömrəsi', textAlign: TextAlign.start, style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),),
+                        const SizedBox(height: 5,),
+                        Container(
+                          height: 40,
+                          alignment: Alignment.center,
+                          decoration:  BoxDecoration(
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            color: Colors.transparent,
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 1.0,
+                              style: BorderStyle.solid,
                             ),
                           ),
-                          SizedBox(height: 5,),
-                          formField(password, 'Şifrə', '*******', true),
-                          formField(password2, 'Şifrə təkrar', '*******', true),
-                        ]
-                      )
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                            child: InternationalPhoneNumberInput(
+                              onInputChanged: (PhoneNumber number) {
+
+                              },
+                              onInputValidated: (bool value) {
+
+                              },
+                              textAlignVertical: TextAlignVertical.center,
+                              selectorConfig: const SelectorConfig(
+                                selectorType: PhoneInputSelectorType.DIALOG,
+                                setSelectorButtonAsPrefixIcon: true,
+                                trailingSpace: false,
+                              ),
+                              hintText: 'Telefon Nömrəsi',
+                              ignoreBlank: true,
+                              autoValidateMode: AutovalidateMode.disabled,
+                              textStyle: const TextStyle(color: Colors.black, fontSize: 14,),
+                              selectorTextStyle: const TextStyle(color: Colors.black,),
+                              initialValue: number,
+                              textFieldController: phone,
+                              formatInput: true,
+                              keyboardType:  const TextInputType.numberWithOptions(signed: true, decimal: true),
+                              inputBorder: InputBorder.none,
+                              onSaved: (PhoneNumber number) {
+
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 5,),
+                        formField(password, 'Şifrə', '*******', true),
+                        formField(password2, 'Şifrə təkrar', '*******', true),
+                      ]
                     ),
-                    SizedBox(height: 20,),
+                    const SizedBox(height: 20,),
                     MbaButton(callback: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterNextPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterNextPage()));
                     }, bgColor: Colors.red, text: 'Next'),
                     //donthaveaccount
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Hesabınız var?'),
+                        const Text('Hesabınız var?'),
                         TextButton(
                             onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
-                            }, child: Text('Giris edin')),
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
+                            }, child: const Text('Giris edin')),
                       ],
                     )
                   ]
@@ -168,14 +166,14 @@ class _RegisterPageState extends State<RegisterPage> {
           padding: const EdgeInsets.only(bottom: 10.0),
           child: Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
           ),
         ),
-        Container(
+        SizedBox(
           height: 40,
           child: TextField(
             controller: controller,
@@ -183,13 +181,13 @@ class _RegisterPageState extends State<RegisterPage> {
             cursorColor: Colors.red,
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Colors.red,
                   width: 1,
                   style: BorderStyle.solid
@@ -199,7 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
-        SizedBox(height: 10,),
+        const SizedBox(height: 10,),
       ],
     );
   }

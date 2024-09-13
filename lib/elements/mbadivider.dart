@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MbaDivider extends StatelessWidget {
@@ -14,12 +13,12 @@ class MbaDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: Divider(height:2, thickness: 2, color: this.lineColor,)),
+        Expanded(child: Divider(height:2, thickness: 2, color: lineColor,)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(this.text, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+          child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
         ),
-        Expanded(child: Divider(height:2,thickness: 2, color: this.lineColor,)),
+        Expanded(child: Divider(height:2,thickness: 2, color: lineColor,)),
       ],
     );
   }

@@ -28,7 +28,7 @@ class _CoursesPageState extends State<CoursesPage> {
             child: Column(
                 children: [
                   ///header
-                  pageHeader(text: 'Kurslar'),
+                  const pageHeader(text: 'Kurslar'),
                   ListView.builder(
                       itemCount: _coursesList.length,
                       shrinkWrap: true,

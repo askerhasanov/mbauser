@@ -31,7 +31,6 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _cntBranch = SingleValueDropDownController();
     _cntPayType = SingleValueDropDownController();
@@ -41,7 +40,6 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
   void dispose() {
     _cntBranch.dispose();
     _cntPayType.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -52,71 +50,67 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
       body: Column(
         children: [
           ///header
-          pageHeader(text: 'Kursa qoşul'),
+          const pageHeader(text: 'Kursa qoşul'),
           /// SELECTED COURSE DATA AND PRICE
-          Container(
-            child: Padding(
-              padding: EdgeInsets.all(5),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Colors.black.withAlpha(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ///title
-                      Text(
-                        'Seçiminizə baxın',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 16),
-                      ),
-                      SizedBox(height: 10,),
-                      yourChoiceRow(title: 'Kursun adı:', text: courseDataFromId(widget.courseId).name),
-                      SizedBox(height: 5,),
-                      yourChoiceRow(title: 'Kursun qiyməti:', text: courseDataFromId(widget.courseId).price),
-                      SizedBox(height: 5,),
-                      yourChoiceRow(title: 'Müraciət tarixi:', text: DateFormat('d/MMMM/y').format(DateTime.now()).toString()),
-                      SizedBox(height: 5,),
-                      Row(
-                        children: [
-                          Expanded(child: DropDownFormField(title: 'Filial', hint: 'filial seçin', controller: _cntBranch, map: {"Mərkəz filialı": 'bayil', "Elite filialı": 'elit'})),
-                        ],
-                      )
-                    ],
-                  ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                color: Colors.black.withAlpha(20),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ///title
+                    const Text(
+                      'Seçiminizə baxın',
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 16),
+                    ),
+                    const SizedBox(height: 10,),
+                    yourChoiceRow(title: 'Kursun adı:', text: courseDataFromId(widget.courseId).name),
+                    const SizedBox(height: 5,),
+                    yourChoiceRow(title: 'Kursun qiyməti:', text: courseDataFromId(widget.courseId).price),
+                    const SizedBox(height: 5,),
+                    yourChoiceRow(title: 'Müraciət tarixi:', text: DateFormat('d/MMMM/y').format(DateTime.now()).toString()),
+                    const SizedBox(height: 5,),
+                    Row(
+                      children: [
+                        Expanded(child: DropDownFormField(title: 'Filial', hint: 'filial seçin', controller: _cntBranch, map: const {"Mərkəz filialı": 'bayil', "Elite filialı": 'elit'})),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
           ),
           /// SELECT PAYMENT TYPE
-          Container(
-            child: Padding(
-              padding: EdgeInsets.all(5),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Colors.black.withAlpha(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ///title
-                      Text(
-                        'Ödəniş tipini seçin',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 16),
-                      ),
-                      SizedBox(height: 10,),
-                      Row(
-                        children: [
-                          Expanded(child: DropDownFormField(title: 'Tip:', hint: 'tipi seçin', controller: _cntPayType, map: {"Nağd": 'cash', "Kart": 'card'})),
-                        ],
-                      )
-                    ],
-                  ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                color: Colors.black.withAlpha(20),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ///title
+                    const Text(
+                      'Ödəniş tipini seçin',
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 16),
+                    ),
+                    const SizedBox(height: 10,),
+                    Row(
+                      children: [
+                        Expanded(child: DropDownFormField(title: 'Tip:', hint: 'tipi seçin', controller: _cntPayType, map: const {"Nağd": 'cash', "Kart": 'card'})),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
@@ -130,9 +124,8 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
                     UiHelpers.showSnackBar(context: context, title:  'Ödəniş tipini seçin!',);
                   }else{
                     if(_cntPayType.dropDownValue!.value == 'cash'){
-                      print('nagd secildi');
                     }else{
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> CardPaymentPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const CardPaymentPage()));
                     }
                   }
 
@@ -158,22 +151,22 @@ class yourChoiceRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
+        SizedBox(
           width: 150,
           child: Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-        SizedBox(width: 10,),
+        const SizedBox(width: 10,),
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               border: Border.all(color: Colors.red, width: 2)
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Text(text),
             ),
           ),
