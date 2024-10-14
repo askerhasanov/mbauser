@@ -1,5 +1,6 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:mbauser/globalVariables.dart';
 
 
 class DropDownFormField extends StatefulWidget {
@@ -42,14 +43,8 @@ class _DropDownFormFieldState extends State<DropDownFormField> {
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                      color: Colors.red,
-                      width: 1,
-                      style: BorderStyle.solid
-                  )
-              ),
+              enabledBorder:myBorder,
+              focusedBorder: myBorder,
               isDense: true
           ),
           clearOption: true,

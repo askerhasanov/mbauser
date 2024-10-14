@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mbauser/elements/colors.dart';
 
-
-
-
 class SurveyScreen extends StatefulWidget {
-
   final String imageSrc;
   final String header;
   final String text;
-
   const SurveyScreen({
     super.key,
     required this.imageSrc,
     required this.header,
     required this.text
   });
-
   @override
   State<SurveyScreen> createState() => _SurveyScreen1State();
 }

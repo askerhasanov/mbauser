@@ -199,32 +199,7 @@ class _LandingPageState extends State<LandingPage> {
                 ),
               )
             ],
-            //head
-            /*
-                UserImaGE - USER FULLNAME - USER username
-              
-                weather
-              
-                notifications
-              
-                */
-              
-            //body
-              
-            /*
-                  openingImage
-              
-                  buttons
-              
-                  progress button
-              
-                  popular courses slider with see all button
-              
-                */
-              
-            //bottom
-              
-              
+
           ),
         ),
       ),

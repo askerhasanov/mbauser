@@ -67,4 +67,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'motobakuacademy-63832.appspot.com',
     iosBundleId: 'com.askerhasanov.mbauser',
   );
+
 }

@@ -1,13 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mbauser/pages/views/courses.dart';
 import 'package:mbauser/pages/views/garage.dart';
 import 'package:mbauser/pages/views/landingPage.dart';
 import 'package:mbauser/pages/views/posts.dart';
+import 'package:provider/provider.dart';
 
 import '../../elements/colors.dart';
+import '../../providers/mbaProvider.dart';
 
 class HomePage extends StatefulWidget {
+  static final id = 'homepage';
   const HomePage({super.key});
 
   @override
@@ -30,6 +36,41 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
   }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MBAProvider>(context, listen: false).loadCurrentUser();
+    });
+    _updateToken();
+  }
+
+  Future<void> _updateToken() async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      // Get the current token
+      String? token = await _firebaseMessaging.getToken();
+
+      if (token != null) {
+        // Update the token in the Realtime Database
+        DatabaseReference userRef =
+        FirebaseDatabase.instance.ref('users/${user.uid}');
+        await userRef.update({
+          'token': token,
+        });
+        print('FCM Token updated successfully: $token');
+      }
+    } else {
+      print('User not signed in');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

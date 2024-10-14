@@ -1,0 +1,10 @@
+{
+  "rules": {
+    ".read": true,  // 2024-8-26
+    ".write": true,// 2024-8-26 
+    "reservations": {
+         ".indexOn": ["day"] 
+       }
+    
+  }
+}

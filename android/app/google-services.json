@@ -8,6 +8,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:196726945085:android:e782369d1c66b263b60154",
+        "android_client_info": {
+          "package_name": "com.askerhasanov.mbaadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4tW8ZPBMcjs6yrjV2lOSicmzht1zRUgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:196726945085:android:a6a469fe5c43182cb60154",
         "android_client_info": {
           "package_name": "com.askerhasanov.mbauser"

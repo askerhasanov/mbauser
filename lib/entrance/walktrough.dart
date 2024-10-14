@@ -7,16 +7,18 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../auth/views/selectEntry.dart';
 
 class WalkThroughPage extends StatefulWidget {
-  const WalkThroughPage({super.key});
+  const WalkThroughPage({super.key, required this.onComplete});
 
   static const String id = 'walkthrough';
+
+  final VoidCallback onComplete; // Callback to indicate completion
 
   @override
   State<WalkThroughPage> createState() => _WalkThroughPageState();
 }
 
 class _WalkThroughPageState extends State<WalkThroughPage> {
-  final controller = PageController(initialPage :0, viewportFraction: 1, keepPage: true);
+  final controller = PageController(initialPage: 0, viewportFraction: 1, keepPage: true);
 
   int currentPage = 0;
 
@@ -26,22 +28,22 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
 
   final List<Widget> pagesList = [
     const SurveyScreen(
-        header: 'TƏCRÜBƏLİ MÜƏLLİMLƏR',
-        imageSrc: 'images/1.jpeg',
-        text: 'Öz sahələrində kifayət qədər təcrübəyə malik olan, illərdir tələbələri öyrədən müəllimlərdən dərs alın!'
+      header: 'TƏCRÜBƏLİ MÜƏLLİMLƏR',
+      imageSrc: 'images/1.jpeg',
+      text: 'Öz sahələrində kifayət qədər təcrübəyə malik olan, illərdir tələbələri öyrədən müəllimlərdən dərs alın!',
     ),
     const SurveyScreen(
-        header: 'ASAN ÖYRƏTMƏ',
-        imageSrc: 'images/2.jpeg',
-        text: 'Müxtəlif həcmdə mühərriklərə malik olan motosikletləri kiçikdən böyüyə real fərdi məşq edərək öyrənin!'
+      header: 'ASAN ÖYRƏTMƏ',
+      imageSrc: 'images/2.jpeg',
+      text: 'Müxtəlif həcmdə mühərriklərə malik olan motosikletləri kiçikdən böyüyə real fərdi məşq edərək öyrənin!',
     ),
     const SurveyScreen(
-        header: 'SƏRBƏST QRAFiK',
-        imageSrc: 'images/3.jpeg',
-        text: 'Həftənin 7 günü hər gün saat 09 00 -dan 20 00 - dək sizə uyğun bir saatı öncədən seçərək təlimdə iştirak edin!'
+      header: 'SƏRBƏST QRAFiK',
+      imageSrc: 'images/3.jpeg',
+      text: 'Həftənin 7 günü hər gün saat 09 00 -dan 20 00 - dək sizə uyğun bir saatı öncədən seçərək təlimdə iştirak edin!',
     ),
-
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,14 +56,14 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
             Expanded(
               child: PageView.builder(
                 controller: controller,
-                itemCount: 3,
+                itemCount: pagesList.length,
                 physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (int page) {
                   setState(() {
                     currentPage = page;
                   });
                 },
-                itemBuilder: (context, index){
+                itemBuilder: (context, index) {
                   return pagesList[index];
                 },
               ),
@@ -76,7 +78,7 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const SizedBox(width: 60,),
+            const SizedBox(width: 60),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -91,27 +93,34 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
                       activeDotColor: Colors.white,
                     ),
                   ),
-                ]
+                ],
               ),
             ),
             IconButton(
-                onPressed: (){
-                  if(currentPage != 2){
-                    controller.nextPage(duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-                  }else{
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SelectEntryPage()));
-                  }
-                  
-                },
-                style: IconButton.styleFrom(
-                  backgroundColor: MbaColors.lightRed,
-                ),
-                icon: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(FontAwesome.chevron_right_solid, color: Colors.white,),
-                )
+              onPressed: () {
+                if (currentPage != pagesList.length - 1) {
+                  controller.nextPage(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeIn,
+                  );
+                } else {
+                  // Trigger the completion callback when the walkthrough is done
+                  widget.onComplete();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SelectEntryPage()),
+                  );
+                }
+              },
+              style: IconButton.styleFrom(
+                backgroundColor: MbaColors.lightRed,
+              ),
+              icon: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(FontAwesome.chevron_right_solid, color: Colors.white),
+              ),
             ),
-            const SizedBox(width: 30,),
+            const SizedBox(width: 30),
           ],
         ),
       ),

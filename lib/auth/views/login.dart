@@ -1,147 +1,265 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mbauser/auth/views/register.dart';
+import 'package:mbauser/auth/views/forgot_password.dart'; // Added forgot password page import
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../elements/colors.dart';
 import '../../elements/mbabutton.dart';
 import '../../elements/mbadivider.dart';
 import '../../elements/uiHelpers.dart';
-
+import '../../globalVariables.dart';
+import '../../pages/views/homepage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  static const String id = 'login';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin{
-
+class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
   bool _remindMe = false;
   bool _obscureText = true;
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    _loadLoginInfo();
+  }
 
+  // Load saved email and password if "Remember Me" was selected
+  Future<void> _loadLoginInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedEmail = prefs.getString('savedEmail');
+    String? savedPassword = prefs.getString('savedPassword');
+    bool? remindMe = prefs.getBool('remindMe') ?? false;
+
+    if (remindMe) {
+      setState(() {
+        _remindMe = remindMe;
+        emailController.text = savedEmail ?? '';
+        passwordController.text = savedPassword ?? '';
+      });
+    }
+  }
+
+  void loginUser() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // Save login info if "Remember Me" is selected
+      if (_remindMe) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('savedEmail', emailController.text.trim());
+        await prefs.setString('savedPassword', passwordController.text.trim());
+        await prefs.setBool('remindMe', _remindMe);
+      } else {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.remove('savedEmail');
+        await prefs.remove('savedPassword');
+        await prefs.setBool('remindMe', _remindMe);
+      }
+
+      // On success, navigate to the HomePage
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+    } catch (e) {
+      // Handle error
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children:[
-                  const SizedBox(height: 80,),
-                  const Column(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              //top
+              Container(
+                decoration: BoxDecoration(
+                  color: MbaColors.red,
+                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Giriş',
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Text('Moto Baku Akademiyə xoş gəlmişsiniz!',
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30,),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
                       SizedBox(
-                        height: 300,
-                        child: _buildEmailLogin(),
+                        height: 20,
                       ),
-                    ],
-                  ),
-                  //rememberme
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _remindMe,
-                        onChanged: (value) {
-                          setState(() {
-                            _remindMe = value!;
-                          });
-                        },
+                      Text(
+                        'GİRİŞ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
                       ),
-                      const Text('Məni xatırla', ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          // Forgot password action
-                        },
-                        child: const Text('Şifrənizi unutmusunuz?',),
+                      SizedBox(
+                        height: 10,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 30,),
-                  const MbaDivider(text: 'və ya', lineColor: Colors.red),
-                  const SizedBox(height: 30,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                          onPressed: (){
-                            UiHelpers.showSnackBar(context: context, title: 'Google login gelecekde elave edilecekdir.');
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Brand(Brands.google),
-                          ),
+                      Text(
+                        'Moto Baku Academy hesabınıza daxil olun. Fürsətlərdən yararlanın!',
+                        style: TextStyle(
+                          color: MbaColors.lightText,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                          onPressed: (){
-                            UiHelpers.showSnackBar(context: context, title: 'Apple login gelecekde elave edilecekdir.');
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Brand(Brands.apple_logo),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //donthaveaccount
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Hesabınız yoxdur?'),
-                      TextButton(
-                          onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterPage()));
-                            }, child: const Text('Qeydiyyatdan kecin')),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
                     ],
                   ),
-                ]
+                ),
               ),
-            ),
-          )
+              SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Hesabınıza daxil olun!', style: TextStyle(color: MbaColors.black, fontWeight: FontWeight.bold, fontSize: 24),)
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20, bottom: 20, right: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 300,
+                      child: _buildEmailLogin(emailController, passwordController),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  children: [
+                    Checkbox(
+                      activeColor: MbaColors.red,
+                      value: _remindMe,
+                      onChanged: (value) {
+                        setState(() {
+                          _remindMe = value!;
+                        });
+                      },
+                    ),
+                    const Text(
+                      'Məni xatırla', style: TextStyle(color: MbaColors.black, fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ForgotPasswordPage()));
+                      },
+                      child: const Text(
+                        'Şifrənizi unutmusunuz?',style: TextStyle(color: MbaColors.red, fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: const MbaDivider(text: 'və ya', lineColor: Colors.red),
+              ),
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                      onPressed: () {
+                        UiHelpers.showSnackBar(
+                            context: context,
+                            title: 'Google login gelecekde elave edilecekdir.');
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Brand(Brands.google),
+                            Text('Google')
+                          ],
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                      onPressed: () {
+                        UiHelpers.showSnackBar(
+                            context: context,
+                            title: 'Apple login gelecekde elave edilecekdir.');
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Brand(Brands.apple_logo),
+                            Text('Apple')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Hesabınız yoxdur?', style: TextStyle(color: MbaColors.black, fontSize: 14, fontWeight: FontWeight.bold),),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const RegisterPage()));
+                      },
+                      child: const Text('Qeydiyyatdan keçin', style: TextStyle(color: MbaColors.red, fontSize: 14, fontWeight: FontWeight.bold),)),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildEmailLogin() {
+  Widget _buildEmailLogin(
+      TextEditingController email, TextEditingController password) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 15.0),
           child: Text(
-              'Emailiniz',
+            'Email',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -150,17 +268,17 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
           ),
         ),
         TextField(
+          controller: email,
           decoration: InputDecoration(
-            hintText: '***********@mail.com',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            hintText: 'you@mail.com',
+            enabledBorder: myBorder,
+            focusedBorder: myBorder,
           ),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 15.0),
           child: Text(
-            'Şifrəniz',
+            'Şifrə',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -170,26 +288,31 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
         ),
         TextField(
           obscureText: _obscureText,
+          controller: password,
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            enabledBorder: myBorder,
+            focusedBorder: myBorder,
             hintText: "************",
             suffixIcon: IconButton(
               icon: Icon(
                 _obscureText ? Icons.visibility : Icons.visibility_off,
+                color: MbaColors.red,
               ),
               onPressed: () {
                 setState(() {
                   _obscureText = !_obscureText;
                 });
               },
-            ),),
+            ),
+          ),
         ),
-        const SizedBox(height: 20,),
-        MbaButton(callback: () {}, bgColor: Colors.red, text: 'Daxil ol')
+        const SizedBox(height: 30),
+        MbaButton(callback: loginUser, bgColor: MbaColors.red, text: "DAXİL OL"),
       ],
     );
   }
 }
+
+
+
 

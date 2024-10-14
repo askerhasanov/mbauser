@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mbauser/auth/views/register.dart';
 import 'package:mbauser/elements/colors.dart';
+import 'package:mbauser/elements/mbadivider.dart';
 import '../../elements/mbabutton.dart';
 import '../../elements/mbabuttonoutline.dart';
 import 'login.dart';
@@ -21,28 +22,43 @@ class _RegistrationPageState extends State<SelectEntryPage> {
     return Scaffold(
       backgroundColor: MbaColors.light,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(child: Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPvgG42cbWEZ671jfzHk7vCoMu-5cafhoCbw&s')),
-              const SizedBox(height: 100,),
-              Column(
-                children: [
-                  MbaButton(callback: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
-                  }, bgColor: MbaColors.red, text: "GİRİŞ"),
-                  const SizedBox(height: 20,),
-                  MbaButtonOutline(callback: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterPage()));
-                  }, lineColor: MbaColors.red, text: "QEYDİYYAT"),
-                  const SizedBox(height: 20,),
-                ],
-              )
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(height: 50,),
+                    Image.asset('images/mbalogo.png', height: 100,),
+                    SizedBox(height: 30,),
+                    Text('XOŞ GƏLMİSİNİZ', style: TextStyle(color: MbaColors.red, fontWeight: FontWeight.bold, fontSize: 40),),
+                    SizedBox(height: 20,),
+                    Text('Yeni macəranıza başlamağa hazır olun!', style: TextStyle(color: MbaColors.black, fontWeight: FontWeight.bold, fontSize: 18),),
+                    SizedBox(height: 45,),
+                    Image.asset('images/welcome.png', width: MediaQuery.of(context).size.width*0.95,),
+                  ],
+                )
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+              child: SizedBox(
+                child: Column(
+                  children: [
+                    SizedBox(height: 20,),
+                    MbaButton(callback: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
+                    }, bgColor: MbaColors.red, text: "DAXİL OL"),
+                    const SizedBox(height: 30,),
+                    MbaButtonOutline(callback: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterPage()));
+                    }, lineColor: MbaColors.red, text: "QEYDİYYAT"),
+                    const SizedBox(height: 80,),
+                  ],
+                ),
+              ),
+            )
+          ],
         )));
   }
 }
