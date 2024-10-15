@@ -6,7 +6,7 @@ import '../../elements/colors.dart';
 import '../../elements/mbabutton.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
-  const ForgotPasswordPage({Key? key}) : super(key: key);
+  const ForgotPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +32,16 @@ class ForgotPasswordPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: MbaColors.red,
                   borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
                 ),
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.all(20),
                   child: Column(
                     children: [
                       SizedBox(height: 20,),
-                      const Text(
+                      Text(
                         'Şifrənizi Unutmusunuz?',
                         style: TextStyle(
                           color: Colors.white,
@@ -49,8 +49,8 @@ class ForgotPasswordPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      const Text(
+                      SizedBox(height: 10),
+                      Text(
                         'Emailinizi daxil edin və biz sizə şifrənizi sıfırlamaq üçün bir keçid göndərək.',
                         style: TextStyle(
                           color: MbaColors.lightText,

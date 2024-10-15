@@ -1,5 +1,4 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mbauser/elements/dropDownFormField.dart';
@@ -68,7 +67,7 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
     });
 
     // Add course to user's myCourses node
-    await FirebaseDatabase.instance.ref().child('users/${userId}/myCourses').push().set({
+    await FirebaseDatabase.instance.ref().child('users/$userId/myCourses').push().set({
       'courseId': widget.courseId,
       'courseName': courseDataFromId(widget.courseId).name,
       'enrollmentDate': DateFormat('d/MMMM/y').format(DateTime.now()).toString(),

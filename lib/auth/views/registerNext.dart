@@ -68,7 +68,7 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
     // Navigate to homepage
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => HomePage()),
+      MaterialPageRoute(builder: (context) => const HomePage()),
           (Route<dynamic> route) => false,
     );
 
@@ -103,7 +103,7 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children:[
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: MbaColors.red,
                       borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
                     ),

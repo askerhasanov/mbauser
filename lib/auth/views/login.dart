@@ -55,7 +55,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-
       // Save login info if "Remember Me" is selected
       if (_remindMe) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -89,7 +88,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
             children: [
               //top
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: MbaColors.red,
                   borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
                 ),
@@ -126,9 +125,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
-              Padding(
-                padding: const EdgeInsets.all(20),
+              const SizedBox(height: 20,),
+              const Padding(
+                padding: EdgeInsets.all(20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -137,7 +136,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 20, bottom: 20, right: 20),
+                padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -180,9 +179,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 ),
               ),
               const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: const MbaDivider(text: 'və ya', lineColor: Colors.red),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: MbaDivider(text: 'və ya', lineColor: Colors.red),
               ),
               const SizedBox(height: 30),
               Padding(
@@ -203,7 +202,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Brand(Brands.google),
-                            Text('Google')
+                            const Text('Google')
                           ],
                         ),
                       ),
@@ -221,7 +220,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Brand(Brands.apple_logo),
-                            Text('Apple')
+                            const Text('Apple')
                           ],
                         ),
                       ),

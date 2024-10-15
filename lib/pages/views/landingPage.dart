@@ -20,15 +20,25 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        height: MediaQuery.of(context).size.height + 100,
-        color: Colors.white,
+        height: MediaQuery.of(context).size.height*0.9,
+        color: MbaColors.lightBg,
         child: Center(
           child: Column(
             children: [
-              
               ///header
               Container(
-                color: MbaColors.red,
+                decoration: const BoxDecoration(
+                  color: MbaColors.red,
+                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: MbaColors.dark,
+                      spreadRadius: 0,
+                      blurRadius: 2,
+                      offset: Offset(0, 1)
+                    )
+                  ]
+                ),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
                   child: Row(
@@ -43,15 +53,15 @@ class _LandingPageState extends State<LandingPage> {
                           const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Name Surname', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),),
-                              Text('/askerhasanov', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),),
+                              Text('Name Surname', style: TextStyle(fontWeight: FontWeight.bold, color: MbaColors.white, fontSize: 16),),
+                              Text('/askerhasanov', style: TextStyle(color: MbaColors.dark, fontWeight: FontWeight.bold),),
                             ],
                           )
                         ]
                       ),
                       Row(
                         children: [
-                          const Text('Baku 9C', style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),),
+                          const Text('Baku 9C', style: TextStyle(color: MbaColors.reddishGray, fontSize: 16, fontWeight: FontWeight.bold),),
                           const SizedBox(width: 10,),
                           IconButton(
                               onPressed: (){
@@ -62,7 +72,7 @@ class _LandingPageState extends State<LandingPage> {
                               },
                               icon: Icon(
                                 isBeingNotified  ? Clarity.bell_solid_badged : Clarity.bell_solid,
-                                color: isBeingNotified  ? Colors.white : Colors.grey,
+                                color: isBeingNotified  ? MbaColors.red : Colors.white,
                               )
                           ),
                         ]
@@ -92,7 +102,7 @@ class _LandingPageState extends State<LandingPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     MbaCircularButton(callback: (){}, icon: Icons.sports_motorsports, name: 'Kurslar',),
-                    MbaCircularButton(callback: (){}, icon: Icons.people, name: 'Müəllimlər',),
+                    MbaCircularButton(callback: (){}, icon: Icons.people, name: 'Heyət',),
                     MbaCircularButton(callback: (){}, icon: Icons.newspaper, name: 'Xəbərlər',),
                     MbaCircularButton(callback: (){}, icon: Icons.event, name: 'Eventlər',),
                     MbaCircularButton(callback: (){}, icon: Icons.app_registration, name: 'Müraciət',),
@@ -112,94 +122,153 @@ class _LandingPageState extends State<LandingPage> {
                   child: Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: MbaColors.red,
+                      color: MbaColors.dark,
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ClipOval(
                             child: Image.asset('images/1.jpeg', height: 40,),
                           ),
-                          const Text('Kursunuza baxın', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
-                          const Icon(FontAwesome.chevron_right_solid, color: Colors.white,),
+                          const Text('Kursunuza baxın', style: TextStyle(color: MbaColors.red, fontSize: 18, fontWeight: FontWeight.bold),),
+                          const Icon(FontAwesome.chevron_right_solid, color: MbaColors.red,),
                         ],
                       ),
                     ),
                   ),
                 ),
               ),
+              const SizedBox(height: 10,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Populyar kurslar', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-                    TextButton(onPressed: (){}, child: const Text('hamısına bax')),
+                    const Text('Populyar kurslar', style: TextStyle(color: MbaColors.black, fontWeight: FontWeight.bold, fontSize: 16),),
+                    TextButton(onPressed: (){}, child: const Text('hamısına bax', style: TextStyle(color: MbaColors.red, fontSize: 16, fontWeight: FontWeight.bold),)),
                   ],
                 ),
               ),
-              const SizedBox(height: 10,),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 3,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    ///extract courseThumbnail widget
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: SizedBox(
-                        width: 250,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                                height: 190,
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: SizedBox(
+                  height: 270,
+                  child: ListView.builder(
+                    itemCount: 3,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: MbaColors.dark,
+                                blurRadius: 2,
+                                spreadRadius: 0,
+                                offset: Offset.zero
+                              )
+                            ],
+                            borderRadius: BorderRadius.all(Radius.circular(10))
+                          ),
+                          width: 250,
+                          height: 200,// Fixed width
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 150,
                                 width: 250,
-                                child: Image.asset('images/1.jpeg', fit: BoxFit.cover,)),
-                            Container(
-                              height: 110,
-                              decoration: const BoxDecoration(
-                                color: MbaColors.red,
-                                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Sade paket', textAlign: TextAlign.start, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
-                                    Row(
-                                      children: [
-                                        Icon(Icons.sports_motorsports, color: Colors.white,),
-                                        SizedBox(width: 5,),
-                                        Text('8 ders' , style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Icon(FontAwesome.star_solid, size: 20, color: Colors.yellow,),
-                                        SizedBox(width: 5,),
-                                        Text('4.5', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
-                                      ],
-                                    )
-                                  ],
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(
+                                    top: Radius.circular(10),
+                                  ),
+                                  child: Image.asset(
+                                    'images/1.jpeg',
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            )
-              
-                          ],
+                              Container(
+                                height: 100,
+                                decoration: const BoxDecoration(
+                                  color: MbaColors.lightRed2,
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 10),
+                                      Text(
+                                        'Sade paket',
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          color: MbaColors.red,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.sports_motorsports,
+                                            color: MbaColors.black,
+                                            size: 14,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            '8 ders',
+                                            style: TextStyle(
+                                              color: MbaColors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            FontAwesome.star_solid,
+                                            size: 16,
+                                            color: Colors.yellow,
+                                            applyTextScaling: true,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            '4.5',
+                                            style: TextStyle(
+                                              color: MbaColors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               )
-            ],
-
+        ],
           ),
         ),
       ),
@@ -230,14 +299,14 @@ class MbaCircularButton extends StatelessWidget{
         children: [
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.zero,
+                padding: const EdgeInsets.all(10),
                 shape: const CircleBorder(),
-                backgroundColor: MbaColors.red,
+                backgroundColor: MbaColors.lightRed2,
               ),
               onPressed: callback,
-              child: Icon(icon, color: Colors.white, size: 25,)
+              child: Icon(icon, color: MbaColors.red, size: 20,)
           ),
-          Text(name, style: const TextStyle(fontSize: 10, color: Colors.black, fontWeight: FontWeight.bold),),
+          Text(name, style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),),
         ],
       ),
     );

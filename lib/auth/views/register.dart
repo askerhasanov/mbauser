@@ -78,7 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: MbaColors.red,
                       borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
                     ),
@@ -159,9 +159,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   isCollapsed: true,
                               ),
                               searchBoxDecoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(10),
+                                  contentPadding: const EdgeInsets.all(10),
                                   hintText: "Ölkə kodunu axtarın və ya seçin",
-                                  icon: Icon(Icons.search, color: MbaColors.red,),
+                                  icon: const Icon(Icons.search, color: MbaColors.red,),
                                   hintStyle: phoneTextStyle,
                                   enabledBorder: myBorder,
                                   focusedBorder: myBorder,
@@ -249,14 +249,14 @@ class _RegisterPageState extends State<RegisterPage> {
             controller: controller,
             obscureText: isSecure,
             cursorColor: MbaColors.red,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
               color: MbaColors.black,
               fontWeight: FontWeight.bold
             ),
             decoration: InputDecoration(
               hintText: hint,
-              contentPadding: EdgeInsets.all(10),
+              contentPadding: const EdgeInsets.all(10),
               hintStyle: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,

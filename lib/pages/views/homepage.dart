@@ -13,7 +13,7 @@ import '../../elements/colors.dart';
 import '../../providers/mbaProvider.dart';
 
 class HomePage extends StatefulWidget {
-  static final id = 'homepage';
+  static const id = 'homepage';
   const HomePage({super.key});
 
   @override
@@ -52,25 +52,18 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _updateToken() async {
     User? user = _auth.currentUser;
-
     if (user != null) {
-      // Get the current token
       String? token = await _firebaseMessaging.getToken();
-
       if (token != null) {
-        // Update the token in the Realtime Database
         DatabaseReference userRef =
         FirebaseDatabase.instance.ref('users/${user.uid}');
         await userRef.update({
           'token': token,
         });
-        print('FCM Token updated successfully: $token');
       }
     } else {
-      print('User not signed in');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -79,34 +72,42 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
           child: _widgetOptions.elementAt(_selectedIndex)
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: MbaColors.red,
-        selectedItemColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        items:  const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Əsas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sports_motorsports),
-            label: 'Kurslar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.newspaper),
-            label: 'Yeniliklər',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesome.motorcycle_solid),
-            label: 'Qaraj',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesome.info_solid),
-            label: 'Haqqımızda',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+      bottomNavigationBar: Theme(
+        data: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: MbaColors.dark,
+          selectedItemColor: MbaColors.red,
+          unselectedItemColor: MbaColors.lightRed2,
+          type: BottomNavigationBarType.fixed,
+          items:  const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Əsas',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.sports_motorsports),
+              label: 'Kurslar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.newspaper),
+              label: 'Yeniliklər',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesome.motorcycle_solid),
+              label: 'Qaraj',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesome.info_solid),
+              label: 'Haqqımızda',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+
+        ),
       ),
     );
   }

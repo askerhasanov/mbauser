@@ -20,7 +20,7 @@ class _SurveyScreen1State extends State<SurveyScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: MbaColors.light,
+        color: MbaColors.lightBg,
         child: Column(
           children: [
             Expanded(child: Image.asset(widget.imageSrc, height: 300, width: 300,)),

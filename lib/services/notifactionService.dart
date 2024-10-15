@@ -41,7 +41,6 @@ class FirebaseMessagingService {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
-      print(notification!.body);
 
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(

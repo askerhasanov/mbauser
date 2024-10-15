@@ -398,9 +398,9 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                                 const SizedBox(height: 10),
                                 // Reservation Section
                                 if (widget.course.status == 'ended')
-                                  Row(
+                                  const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
+                                    children: [
                                       Text(
                                         'Bu kurs bitmişdir',
                                         style: TextStyle(
@@ -484,7 +484,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                   maxWidth: 200,
                 ),
                 decoration: const BoxDecoration(
-                  color: MbaColors.light,
+                  color: MbaColors.lightBg,
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
                 child: Padding(

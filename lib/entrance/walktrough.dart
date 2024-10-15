@@ -47,7 +47,7 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MbaColors.light,
+      backgroundColor: MbaColors.lightBg,
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,

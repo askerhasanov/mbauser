@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mbauser/auth/views/register.dart';
 import 'package:mbauser/elements/colors.dart';
-import 'package:mbauser/elements/mbadivider.dart';
 import '../../elements/mbabutton.dart';
 import '../../elements/mbabuttonoutline.dart';
 import 'login.dart';
@@ -20,7 +19,7 @@ class _RegistrationPageState extends State<SelectEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MbaColors.light,
+      backgroundColor: MbaColors.lightBg,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -29,13 +28,13 @@ class _RegistrationPageState extends State<SelectEntryPage> {
             Expanded(
                 child: Column(
                   children: [
-                    SizedBox(height: 50,),
+                    const SizedBox(height: 50,),
                     Image.asset('images/mbalogo.png', height: 100,),
-                    SizedBox(height: 30,),
-                    Text('XOŞ GƏLMİSİNİZ', style: TextStyle(color: MbaColors.red, fontWeight: FontWeight.bold, fontSize: 40),),
-                    SizedBox(height: 20,),
-                    Text('Yeni macəranıza başlamağa hazır olun!', style: TextStyle(color: MbaColors.black, fontWeight: FontWeight.bold, fontSize: 18),),
-                    SizedBox(height: 45,),
+                    const SizedBox(height: 30,),
+                    const Text('XOŞ GƏLMİSİNİZ', style: TextStyle(color: MbaColors.red, fontWeight: FontWeight.bold, fontSize: 40),),
+                    const SizedBox(height: 20,),
+                    const Text('Yeni macəranıza başlamağa hazır olun!', style: TextStyle(color: MbaColors.black, fontWeight: FontWeight.bold, fontSize: 18),),
+                    const SizedBox(height: 45,),
                     Image.asset('images/welcome.png', width: MediaQuery.of(context).size.width*0.95,),
                   ],
                 )
@@ -45,7 +44,7 @@ class _RegistrationPageState extends State<SelectEntryPage> {
               child: SizedBox(
                 child: Column(
                   children: [
-                    SizedBox(height: 20,),
+                    const SizedBox(height: 20,),
                     MbaButton(callback: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
                     }, bgColor: MbaColors.red, text: "DAXİL OL"),

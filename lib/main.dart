@@ -66,7 +66,6 @@ class _MyAppState extends State<MyApp> {
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-
     return ChangeNotifierProvider(
       create: (BuildContext context) => MBAProvider(),
       child: MaterialApp(

@@ -71,7 +71,7 @@ class _PostsPageState extends State<PostsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: MbaColors.light,
+      color: MbaColors.lightBg,
       child: Column(
         children: [
           // Header
