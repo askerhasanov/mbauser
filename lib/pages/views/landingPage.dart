@@ -34,8 +34,8 @@ class _LandingPageState extends State<LandingPage> {
                     BoxShadow(
                       color: MbaColors.dark,
                       spreadRadius: 0,
-                      blurRadius: 2,
-                      offset: Offset(0, 1)
+                      blurRadius: 1,
+                      offset: Offset(0, 0)
                     )
                   ]
                 ),
@@ -122,7 +122,16 @@ class _LandingPageState extends State<LandingPage> {
                   child: Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: MbaColors.dark,
+                      gradient: LinearGradient(
+                        colors: [
+                          MbaColors.darkRed,   // Darker red
+                          MbaColors.red,       // Vibrant red
+                          MbaColors.lightRed,  // Light, bright red
+                        ],
+                        begin: Alignment.topLeft, // Starts the gradient from the top-left corner
+                        end: Alignment.bottomRight, // Ends at the bottom-right corner for a diagonal effect
+                        transform: GradientRotation(2.6), // Slight rotation to give the gradient a more dynamic feel
+                      )
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -132,8 +141,8 @@ class _LandingPageState extends State<LandingPage> {
                           ClipOval(
                             child: Image.asset('images/1.jpeg', height: 40,),
                           ),
-                          const Text('Kursunuza baxın', style: TextStyle(color: MbaColors.red, fontSize: 18, fontWeight: FontWeight.bold),),
-                          const Icon(FontAwesome.chevron_right_solid, color: MbaColors.red,),
+                          const Text('Kursunuza baxın', style: TextStyle(color: MbaColors.white, fontSize: 18, fontWeight: FontWeight.bold),),
+                          const Icon(FontAwesome.chevron_right_solid, color: MbaColors.white,),
                         ],
                       ),
                     ),
@@ -154,7 +163,7 @@ class _LandingPageState extends State<LandingPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: SizedBox(
-                  height: 270,
+                  height: 300,  // Keep the parent container height fixed
                   child: ListView.builder(
                     itemCount: 3,
                     shrinkWrap: true,
@@ -162,106 +171,135 @@ class _LandingPageState extends State<LandingPage> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: MbaColors.dark,
-                                blurRadius: 2,
-                                spreadRadius: 0,
-                                offset: Offset.zero
-                              )
-                            ],
-                            borderRadius: BorderRadius.all(Radius.circular(10))
-                          ),
-                          width: 250,
-                          height: 200,// Fixed width
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 150,
-                                width: 250,
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.vertical(
-                                    top: Radius.circular(10),
+                        child: Stack(
+                          clipBehavior: Clip.none, // Allow the Positioned widget to be clipped if needed
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white, // Add background color for shadow visibility
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: MbaColors.dark.withOpacity(0.3),
+                                    blurRadius: 2,
+                                    spreadRadius: 0,
+                                    offset: Offset(1, 1), // Slight offset for better shadow effect
                                   ),
-                                  child: Image.asset(
-                                    'images/1.jpeg',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                                ],
+                                borderRadius: const BorderRadius.all(Radius.circular(10)),
                               ),
-                              Container(
-                                height: 100,
-                                decoration: const BoxDecoration(
-                                  color: MbaColors.lightRed2,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(10),
+                              width: 250,
+                              height: 250, // Fixed height for the content
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 150,  // Adjust image height to avoid overflow
+                                    width: 250,
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.vertical(
+                                        top: Radius.circular(10),
+                                      ),
+                                      child: Image.asset(
+                                        'images/1.jpeg',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 15.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 10),
-                                      Text(
-                                        'Sade paket',
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          color: MbaColors.red,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
+                                  Container(
+                                    height: 100,  // Adjust height to fit within 200px container
+                                    decoration: const BoxDecoration(
+                                      color: MbaColors.lightRed2,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
                                       ),
-                                      Row(
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Icon(
-                                            Icons.sports_motorsports,
-                                            color: MbaColors.black,
-                                            size: 14,
-                                          ),
-                                          SizedBox(width: 5),
+                                          SizedBox(height: 10),
                                           Text(
-                                            '8 ders',
+                                            'Sade paket',
+                                            textAlign: TextAlign.start,
                                             style: TextStyle(
-                                              color: MbaColors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            FontAwesome.star_solid,
-                                            size: 16,
-                                            color: Colors.yellow,
-                                            applyTextScaling: true,
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            '4.5',
-                                            style: TextStyle(
-                                              color: MbaColors.black,
+                                              color: MbaColors.red,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16,
                                             ),
                                           ),
+                                          SizedBox(height: 5),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.sports_motorsports,
+                                                color: MbaColors.black,
+                                                size: 14,
+                                              ),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                '8 ders',
+                                                style: TextStyle(
+                                                  color: MbaColors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Positioned Rating Badge
+                            Positioned(
+                              top: 10,  // Adjust the position to avoid overflow
+                              right: 10,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: MbaColors.lightBg,
+                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: MbaColors.dark.withOpacity(0.2),
+                                      blurRadius: 5,
+                                      spreadRadius: 1,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: const Padding(
+                                  padding:  EdgeInsets.all(5.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        FontAwesome.star_solid,
+                                        size: 14,
+                                        color: MbaColors.red,
+                                        applyTextScaling: true,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        '4.5',
+                                        style: TextStyle(
+                                          color: MbaColors.dark,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       );
                     },

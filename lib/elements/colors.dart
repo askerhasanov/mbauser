@@ -7,7 +7,7 @@ class MbaColors{
   static const Color red = Color(0xFFEA0F24);
   static const Color lightRed = Color(0xFFFF3B53);
   static const Color lightRed3 = Color(0xFFD6CACF);
-  static const Color lightRed2 = Color(0xFFFFCDD4);
+  static const Color lightRed2 = Color(0xFFF6EEEF);
   static const Color lightBg = Color(0xFFF5F3F4);
   static const Color lightText = Color(0xFFD3D3D3);
 
