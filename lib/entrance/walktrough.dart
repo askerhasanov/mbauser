@@ -29,17 +29,17 @@ class _WalkThroughPageState extends State<WalkThroughPage> {
   final List<Widget> pagesList = [
     const SurveyScreen(
       header: 'TƏCRÜBƏLİ MÜƏLLİMLƏR',
-      imageSrc: 'images/1.jpeg',
+      imageSrc: 'images/1.png',
       text: 'Öz sahələrində kifayət qədər təcrübəyə malik olan, illərdir tələbələri öyrədən müəllimlərdən dərs alın!',
     ),
     const SurveyScreen(
       header: 'ASAN ÖYRƏTMƏ',
-      imageSrc: 'images/2.jpeg',
+      imageSrc: 'images/2.png',
       text: 'Müxtəlif həcmdə mühərriklərə malik olan motosikletləri kiçikdən böyüyə real fərdi məşq edərək öyrənin!',
     ),
     const SurveyScreen(
       header: 'SƏRBƏST QRAFiK',
-      imageSrc: 'images/3.jpeg',
+      imageSrc: 'images/3.png',
       text: 'Həftənin 7 günü hər gün saat 09 00 -dan 20 00 - dək sizə uyğun bir saatı öncədən seçərək təlimdə iştirak edin!',
     ),
   ];

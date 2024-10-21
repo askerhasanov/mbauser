@@ -3,6 +3,10 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:mbauser/elements/colors.dart';
 import 'package:mbauser/elements/uiHelpers.dart';
 import 'package:mbauser/pages/views/myCoursePage.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/user.dart';
+import '../../providers/mbaProvider.dart';
 
 
 class LandingPage extends StatefulWidget {
@@ -16,8 +20,18 @@ class _LandingPageState extends State<LandingPage> {
 
   bool isBeingNotified = false;
 
+
+  String imgSrc(String gender){
+    return gender == 'man' ? 'images/male.png' : 'images/female.png';
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    UserModel? user = Provider.of<MBAProvider>(context, listen: false).currentUser;
+
+    print('images/${user!.gender! == 'man' ? 'male' : 'female'}.png');
+
     return SingleChildScrollView(
       child: Container(
         height: MediaQuery.of(context).size.height*0.9,
@@ -47,14 +61,15 @@ class _LandingPageState extends State<LandingPage> {
                       Row(
                         children: [
                           ClipOval(
-                            child: Image.asset('images/1.jpeg', height: 60,),
+                            child: Image.asset(imgSrc(user.gender!), height: 60,),
                           ),
                           const SizedBox(width: 10,),
-                          const Column(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Name Surname', style: TextStyle(fontWeight: FontWeight.bold, color: MbaColors.white, fontSize: 16),),
-                              Text('/askerhasanov', style: TextStyle(color: MbaColors.dark, fontWeight: FontWeight.bold),),
+                              Text("Xoş gördük!", style: TextStyle(fontWeight: FontWeight.bold, color: MbaColors.white, fontSize: 16),),
+                              Text(user.fullName!, style: TextStyle(fontWeight: FontWeight.normal, color: MbaColors.white, fontSize: 14),),
+                              Text('/${user.userName}', style: TextStyle(color: MbaColors.darkRed, fontWeight: FontWeight.bold),),
                             ],
                           )
                         ]
@@ -89,7 +104,7 @@ class _LandingPageState extends State<LandingPage> {
                     width: MediaQuery.of(context).size.width,
                     height: 200,
                     child: Image.asset(
-                      'images/2.jpeg',
+                      'images/landing.png',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -122,7 +137,7 @@ class _LandingPageState extends State<LandingPage> {
                   child: Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: MbaColors.dark,
+                      color: MbaColors.red,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -130,10 +145,10 @@ class _LandingPageState extends State<LandingPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ClipOval(
-                            child: Image.asset('images/1.jpeg', height: 40,),
+                            child: Image.asset('images/1.png', height: 40,),
                           ),
-                          const Text('Kursunuza baxın', style: TextStyle(color: MbaColors.red, fontSize: 18, fontWeight: FontWeight.bold),),
-                          const Icon(FontAwesome.chevron_right_solid, color: MbaColors.red,),
+                          const Text('Kursunuza baxın', style: TextStyle(color: MbaColors.white, fontSize: 18, fontWeight: FontWeight.bold),),
+                          const Icon(FontAwesome.chevron_right_solid, color: MbaColors.white,),
                         ],
                       ),
                     ),
@@ -187,7 +202,7 @@ class _LandingPageState extends State<LandingPage> {
                                     top: Radius.circular(10),
                                   ),
                                   child: Image.asset(
-                                    'images/1.jpeg',
+                                    'images/2.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -304,7 +319,7 @@ class MbaCircularButton extends StatelessWidget{
                 backgroundColor: MbaColors.lightRed2,
               ),
               onPressed: callback,
-              child: Icon(icon, color: MbaColors.red, size: 20,)
+              child: Icon(icon, color: MbaColors.darkRed, size: 20,)
           ),
           Text(name, style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),),
         ],

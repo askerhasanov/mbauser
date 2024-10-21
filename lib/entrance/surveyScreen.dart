@@ -23,7 +23,7 @@ class _SurveyScreen1State extends State<SurveyScreen> {
         color: MbaColors.lightBg,
         child: Column(
           children: [
-            Expanded(child: Image.asset(widget.imageSrc, height: 300, width: 300,)),
+            Expanded(child: Image.asset(widget.imageSrc, width: MediaQuery.of(context).size.width*0.95,)),
             const SizedBox(height: 60,),
             Container(
                 decoration: const BoxDecoration(

@@ -20,7 +20,8 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin {
   bool _remindMe = false;
   bool _obscureText = true;
 
@@ -51,7 +52,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
 
   void loginUser() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
@@ -73,7 +75,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
           context, MaterialPageRoute(builder: (context) => const HomePage()));
     } catch (e) {
       // Handle error
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -86,52 +89,58 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              const SizedBox(
+                height: 20,
+              ),
               //top
-              Container(
-                decoration: const BoxDecoration(
-                  color: MbaColors.red,
-                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'GİRİŞ',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Moto Baku Academy hesabınıza daxil olun. Fürsətlərdən yararlanın!',
-                        style: TextStyle(
-                          color: MbaColors.lightText,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: MbaColors.red,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'GİRİŞ',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Moto Baku Academy hesabınıza daxil olun. Fürsətlərdən yararlanın!',
+                          style: TextStyle(
+                            color: MbaColors.lightBg,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 20,),
               const Padding(
                 padding: EdgeInsets.all(20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Hesabınıza daxil olun!', style: TextStyle(color: MbaColors.black, fontWeight: FontWeight.bold, fontSize: 24),)
+                    Text(
+                      'Hesabınıza daxil olun!',
+                      style: TextStyle(
+                          color: MbaColors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    )
                   ],
                 ),
               ),
@@ -142,7 +151,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   children: [
                     SizedBox(
                       height: 300,
-                      child: _buildEmailLogin(emailController, passwordController),
+                      child:
+                          _buildEmailLogin(emailController, passwordController),
                     ),
                   ],
                 ),
@@ -161,7 +171,11 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                       },
                     ),
                     const Text(
-                      'Məni xatırla', style: TextStyle(color: MbaColors.black, fontSize: 14, fontWeight: FontWeight.bold),
+                      'Məni xatırla',
+                      style: TextStyle(
+                          color: MbaColors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
                     ),
                     const Spacer(),
                     TextButton(
@@ -169,10 +183,15 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ForgotPasswordPage()));
+                                builder: (context) =>
+                                    const ForgotPasswordPage()));
                       },
                       child: const Text(
-                        'Şifrənizi unutmusunuz?',style: TextStyle(color: MbaColors.red, fontSize: 14, fontWeight: FontWeight.bold),
+                        'Şifrənizi unutmusunuz?',
+                        style: TextStyle(
+                            color: MbaColors.red,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -190,7 +209,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                      style:
+                          ElevatedButton.styleFrom(shape: const CircleBorder()),
                       onPressed: () {
                         UiHelpers.showSnackBar(
                             context: context,
@@ -208,7 +228,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                       ),
                     ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                      style:
+                          ElevatedButton.styleFrom(shape: const CircleBorder()),
                       onPressed: () {
                         UiHelpers.showSnackBar(
                             context: context,
@@ -228,11 +249,19 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   ],
                 ),
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(
+                height: 30,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Hesabınız yoxdur?', style: TextStyle(color: MbaColors.black, fontSize: 14, fontWeight: FontWeight.bold),),
+                  const Text(
+                    'Hesabınız yoxdur?',
+                    style: TextStyle(
+                        color: MbaColors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold),
+                  ),
                   TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -240,7 +269,13 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             MaterialPageRoute(
                                 builder: (context) => const RegisterPage()));
                       },
-                      child: const Text('Qeydiyyatdan keçin', style: TextStyle(color: MbaColors.red, fontSize: 14, fontWeight: FontWeight.bold),)),
+                      child: const Text(
+                        'Qeydiyyatdan keçin',
+                        style: TextStyle(
+                            color: MbaColors.red,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
             ],
@@ -266,13 +301,28 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
             ),
           ),
         ),
-        TextField(
-          controller: email,
-          decoration: InputDecoration(
-            hintText: 'you@mail.com',
-            enabledBorder: myBorder,
-            focusedBorder: myBorder,
+        Container(
+          decoration: BoxDecoration(
+            color: MbaColors.lightRed3,
+            borderRadius: BorderRadius.circular(12),
           ),
+          child: TextField(
+              controller: email,
+              cursorColor: MbaColors.red,
+              style: const TextStyle(
+                  fontSize: 15,
+                  color: MbaColors.black,
+                  fontWeight: FontWeight.w500),
+              decoration: const InputDecoration(
+                  hintText: 'you@mail.com',
+                  contentPadding: EdgeInsets.all(10),
+                  hintStyle: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.normal,
+                      color: MbaColors.lightText3),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  isDense: true)),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 15.0),
@@ -285,33 +335,46 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
             ),
           ),
         ),
-        TextField(
-          obscureText: _obscureText,
-          controller: password,
-          decoration: InputDecoration(
-            enabledBorder: myBorder,
-            focusedBorder: myBorder,
-            hintText: "************",
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscureText ? Icons.visibility : Icons.visibility_off,
-                color: MbaColors.red,
-              ),
-              onPressed: () {
-                setState(() {
-                  _obscureText = !_obscureText;
-                });
-              },
-            ),
+        Container(
+          height: 40,
+          decoration: BoxDecoration(
+            color: MbaColors.lightRed3,
+            borderRadius: BorderRadius.circular(12),
           ),
+          child: TextField(
+              obscureText: _obscureText,
+              controller: password,
+              cursorColor: MbaColors.red,
+              style: const TextStyle(
+                  fontSize: 15,
+                  color: MbaColors.black,
+                  fontWeight: FontWeight.w500),
+              decoration: InputDecoration(
+                hintText: "**********",
+                contentPadding: const EdgeInsets.all(10),
+                hintStyle: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                    color: MbaColors.lightText3),
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                    color: MbaColors.red,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                ),
+              )),
         ),
         const SizedBox(height: 30),
-        MbaButton(callback: loginUser, bgColor: MbaColors.red, text: "DAXİL OL"),
+        MbaButton(
+            callback: loginUser, bgColor: MbaColors.red, text: "DAXİL OL"),
       ],
     );
   }
 }
-
-
-
-
