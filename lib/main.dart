@@ -15,9 +15,7 @@ import 'pages/views/homepage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
   FirebaseMessagingService.initialize();
-  
   runApp(const MyApp());
 }
 
@@ -29,7 +27,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _showWalkthrough = true;
+
   bool _isLoading = true;
   String? _initialRoute;
 
@@ -74,6 +72,8 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: MbaColors.red),
           useMaterial3: true,
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         routes: {
           SelectEntryPage.id: (context) => const SelectEntryPage(),
@@ -89,10 +89,5 @@ class _MyAppState extends State<MyApp> {
   void _completeWalkthrough() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasSeenWalkthrough', true);
-    if (mounted) {
-      setState(() {
-        _showWalkthrough = false;
-      });
-    }
   }
 }

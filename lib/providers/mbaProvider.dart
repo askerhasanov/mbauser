@@ -1,41 +1,41 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import '../models/user.dart'; // Import your UserModel class
+import '../models/user.dart';
 
 class MBAProvider extends ChangeNotifier {
   String? _userId;
-  UserModel? _currentUser; // Store the full user data
+  UserModel? _currentUser;
 
   String? get userId => _userId;
-  UserModel? get currentUser => _currentUser; // Getter for the currentUser
+  UserModel? get currentUser => _currentUser;
 
-  // This method fetches the user data from Firebase
+  // Load current user data
   Future<void> loadCurrentUser() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
       _userId = currentUser.uid;
-      await _loadUserFromDatabase(currentUser.uid); // Load user data from the database
-      notifyListeners(); // Notify listeners that user data has been set
+      await _loadUserFromDatabase(currentUser.uid);
+      notifyListeners();
     }
   }
 
-  // This method loads the user data from Firebase Realtime Database
+  // Load user data from Firebase
   Future<void> _loadUserFromDatabase(String uid) async {
     DatabaseReference userRef = FirebaseDatabase.instance.ref('users/$uid');
     DatabaseEvent event = await userRef.once();
 
     if (event.snapshot.value != null) {
       Map<String, dynamic> userData = Map<String, dynamic>.from(event.snapshot.value as Map);
-      _currentUser = UserModel.fromMap(uid, userData); // Assign to _currentUser
+      _currentUser = UserModel.fromMap(uid, userData);
     }
   }
 
-  /// RESERVATION DATE AND TIME SELECT
-
+  /// Reservation selection fields
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
   DateTime? finalDate;
+  String? selectedCourseId;
 
   void selectDate(DateTime date) {
     selectedDate = date;
@@ -49,6 +49,11 @@ class MBAProvider extends ChangeNotifier {
 
   void updateFinalDate(DateTime date) {
     finalDate = date;
+    notifyListeners();
+  }
+
+  void setSelectedCourseId(String courseId) {
+    selectedCourseId = courseId;
     notifyListeners();
   }
 }

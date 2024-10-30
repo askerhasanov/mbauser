@@ -1,24 +1,32 @@
-class Review{
-  final String id;
-  final String sender;
-  final String rating;
-  final String text;
+class Review {
+  final String username;
+  final String review;
+  final double rating;
 
   Review({
-    required this.id,
-    required this.sender,
+    required this.username,
+    required this.review,
     required this.rating,
-    required this.text,
   });
 
+  factory Review.fromMap(Map<dynamic, dynamic> entry) {
+    // Cast entry to Map<String, dynamic> safely
+    Map<String, dynamic> data = Map<String, dynamic>.from(entry);
 
-  factory Review.fromMap(MapEntry<String, dynamic> entry){
+    // Safely handle rating (whether int or string)
+    double safeRating;
+    if (data['rating'] is int) {
+      safeRating = (data['rating'] as int).toDouble();
+    } else if (data['rating'] is String) {
+      safeRating = double.tryParse(data['rating']) ?? 0.0;
+    } else {
+      safeRating = 0.0;
+    }
+
     return Review(
-        id: entry.key,
-        sender: entry.value['username'],
-        rating: entry.value['rating'],
-        text: entry.value['review']
+      username: data['username'] as String,
+      review: data['review'] as String,
+      rating: safeRating,
     );
   }
-
 }

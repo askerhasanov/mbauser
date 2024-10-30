@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:dio/dio.dart'; // For API calls
+import 'package:firebase_database/firebase_database.dart';
+import 'package:provider/provider.dart';
+import 'package:dio/dio.dart';
+import '../../providers/mbaProvider.dart';
+import 'myCoursePage.dart';
 
 class CardPaymentPage extends StatefulWidget {
-  final Function(String) onPaymentSuccess; // Callback for successful payment
-  final String courseId; // Course ID to include in the payment
+  final Function(String) onPaymentSuccess;
+  final String courseId;
 
   const CardPaymentPage({super.key, required this.onPaymentSuccess, required this.courseId});
 
@@ -18,32 +23,31 @@ class _CardPaymentPageState extends State<CardPaymentPage> {
   String paymentUrl = '';
   String transactionId = '';
 
-  final Dio _dio = Dio(); // Initialize Dio for API requests
+  final Dio _dio = Dio();
 
   @override
   void initState() {
     super.initState();
-    _webViewController = WebViewController(); // Initialize the WebView controller
-    createCardPayment(); // Call to initiate the payment process
+    _webViewController = WebViewController();
+    createCardPayment();
   }
 
-  // Function to create payment using m10 API
   Future<void> createCardPayment() async {
+    final userId = Provider.of<MBAProvider>(context, listen: false).userId;
     try {
-      // Replace 'yourAccessToken' and other details with actual data from the m10 provider
       final response = await _dio.post(
         'https://api.m10.az/acquiring/api/v1/orders/actions/create-payment',
         data: {
-          'orderId': widget.courseId, // Unique course ID as order ID
-          'currencyISO': 'AZN', // Replace with the currency you need
-          'amount': '300', // The amount for the course
-          'confirmURL': 'https://yourapp.com/success', // URL when payment succeeds
-          'cancelURL': 'https://yourapp.com/cancel', // URL when payment is cancelled
-          'errorURL': 'https://yourapp.com/error', // URL when there's an error
+          'orderId': widget.courseId,
+          'currencyISO': 'AZN',
+          'amount': '300', // Update amount as needed
+          'confirmURL': 'https://yourapp.com/success',
+          'cancelURL': 'https://yourapp.com/cancel',
+          'errorURL': 'https://yourapp.com/error',
         },
         options: Options(
           headers: {
-            'Authorization': 'Bearer yourAccessToken', // Replace with actual access token
+            'Authorization': 'Bearer yourAccessToken', // Replace with actual token
             'Content-Type': 'application/json',
           },
         ),
@@ -51,48 +55,51 @@ class _CardPaymentPageState extends State<CardPaymentPage> {
 
       if (response.statusCode == 200) {
         setState(() {
-          paymentUrl = response.data['paymentURL']; // Get the payment URL from the response
-          transactionId = response.data['transactionId']; // Save the transaction ID
+          paymentUrl = response.data['paymentURL'];
+          transactionId = response.data['transactionId'];
         });
-
-        // Load the payment URL in the WebView
         _webViewController.loadRequest(Uri.parse(paymentUrl));
       } else {
         throw Exception('Failed to create payment');
       }
     } catch (e) {
-      print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Payment creation failed: $e')),
       );
     }
   }
 
-  // Handle WebView navigation to check if the payment succeeded or failed
   void _handleWebNavigation(String url) {
+    final userId = Provider.of<MBAProvider>(context, listen: false).userId;
     if (url.contains('success')) {
-      // If the payment is successful, call the success callback and pass the transaction ID
       widget.onPaymentSuccess(transactionId);
-      Navigator.pop(context); // Close the payment page
+      FirebaseDatabase.instance.ref('payments/card').push().set({
+        'courseId': widget.courseId,
+        'userId': userId,
+        'transactionId': transactionId,
+        'status': 'paid',
+        'amount': '300',
+        'date': DateFormat('d/MMMM/y').format(DateTime.now()).toString(),
+      });
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MyCoursePage()));
     } else if (url.contains('cancel') || url.contains('error')) {
-      // If the payment failed or was cancelled, show a message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Payment cancelled or failed')),
       );
-      Navigator.pop(context); // Close the payment page
+      Navigator.pop(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Card Payment'),
-      ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator()) // Show loading indicator while waiting for the payment URL
-          : WebViewWidget(
-        controller: _webViewController, // Attach the WebView controller
+      appBar: AppBar(title: const Text('Card Payment')),
+      body: Stack(
+        children: [
+          WebViewWidget(controller: _webViewController),
+          if (isLoading)
+            const Center(child: CircularProgressIndicator()),
+        ],
       ),
     );
   }

@@ -2,8 +2,8 @@ class CourseCardModel {
   final String courseId;
   final String courseName;
   final String enrollmentDate;
-  final String status; // e.g., 'active', 'waiting'
-  final String payment; // e.g., 'waiting', 'payed'
+  final String status;
+  final Map<String, dynamic> payment; // Change this to Map<String, dynamic>
   final String branch;
 
   CourseCardModel({
@@ -22,7 +22,7 @@ class CourseCardModel {
       courseName: data['courseName'] ?? '',
       enrollmentDate: data['enrollmentDate'] ?? '',
       status: data['status'] ?? '',
-      payment: data['payment'] ?? '',
+      payment: Map<String, dynamic>.from(data['payment'] ?? {}), // Convert payment to Map<String, dynamic>
       branch: data['branch'] ?? '',
     );
   }

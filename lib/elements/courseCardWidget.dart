@@ -8,7 +8,7 @@ import 'package:mbauser/providers/mbaProvider.dart';
 import 'package:provider/provider.dart';
 import '../../services/reservationService.dart';
 import '../globalVariables.dart';
-import '../models/coursecard.dart';
+import '../models/courseCard.dart';
 
 class CourseCardWidget extends StatefulWidget {
   final CourseCardModel course;
@@ -518,13 +518,13 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
               right: 20,
               child: Container(
                 decoration: BoxDecoration(
-                  color: _getBackgroundColorForPayment(widget.course.payment),
+                  color: _getBackgroundColorForPayment(widget.course.payment['status']!),
                   shape: BoxShape.circle,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Icon(
-                    _getIconForPayment(widget.course.payment),
+                    _getIconForPayment(widget.course.payment['status']!),
                     color: Colors.white,
                     size: 20,
                   ),
@@ -541,7 +541,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
   IconData _getIconForPayment(String paymentStatus) {
     if (paymentStatus == 'payed') {
       return FontAwesome.play_solid; // Play icon for payed status
-    } else if (paymentStatus == 'waiting') {
+    } else if (paymentStatus == 'waitingAdmin') {
       return FontAwesome.spinner_solid; // Loading/spinner icon for waiting status
     } else {
       return FontAwesome.exclamation_solid; // Default icon for other statuses
@@ -550,9 +550,9 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
 
   // Helper to determine background color based on payment status
   Color _getBackgroundColorForPayment(String paymentStatus) {
-    if (paymentStatus == 'payed') {
+    if (paymentStatus == 'payedOut') {
       return Colors.green; // Green for payed status
-    } else if (paymentStatus == 'waiting') {
+    } else if (paymentStatus == 'waitingAdmin') {
       return Colors.yellow[700]!; // Yellow for waiting status
     } else {
       return Colors.red; // Default red for other statuses

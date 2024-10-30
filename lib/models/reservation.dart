@@ -6,6 +6,7 @@ class Reservation {
   String userId;
   DateTime date;
   String time;
+  bool forMeet;
 
   Reservation({
     required this.id,
@@ -13,6 +14,7 @@ class Reservation {
     required this.userId,
     required this.date,
     required this.time,
+    required this.forMeet
   });
 
   // Factory constructor for creating a Reservation object from a database snapshot
@@ -23,6 +25,7 @@ class Reservation {
       userId: entry.value['userId'] as String,
       date: DateTime.parse(entry.value['day'] as String),
       time: entry.value['time'] as String,
+      forMeet: entry.value['forMeet'] as bool
     );
   }
 
@@ -32,5 +35,6 @@ class Reservation {
     'userId': userId,
     'day': DateFormat('y-MM-dd').format(date),
     'time': time,
+    'forMeet': forMeet,
   };
 }

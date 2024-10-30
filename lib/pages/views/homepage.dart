@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import '../../elements/colors.dart';
 import '../../models/user.dart';
 import '../../providers/mbaProvider.dart';
@@ -68,75 +69,41 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: MbaColors.lightBg,
       body: SafeArea(
         child: user == null
-            ? Center(child: CircularProgressIndicator()) // Show a loader while user data is being fetched
+            ? const Center(child: CircularProgressIndicator()) // Show a loader while user data is being fetched
             : _widgetOptions.elementAt(_selectedIndex), // Once data is loaded, show the selected screen
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(
-            left: 10, right: 10, bottom: 10), // Padding around the bottom nav bar
-        child: Theme(
-          data: ThemeData(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              color: MbaColors.dark,
-              borderRadius: BorderRadius.circular(20), // Rounded corners for the container
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: BottomNavigationBar(
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              backgroundColor: Colors.transparent,
-              selectedItemColor: MbaColors.red,
-              unselectedItemColor: MbaColors.lightRed3,
-              type: BottomNavigationBarType.fixed,
-              items: [
-                _buildNavigationBarItem(Icons.home, 'Əsas', 0),
-                _buildNavigationBarItem(Icons.sports_motorsports, 'Kurslar', 1),
-                _buildNavigationBarItem(Icons.newspaper, 'Yeniliklər', 2),
-                _buildNavigationBarItem(FontAwesome.motorcycle_solid, 'Qaraj', 3),
-                _buildNavigationBarItem(FontAwesome.info_solid, 'Haqqımızda', 4),
-              ],
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-            ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: MbaColors.red,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20.0),
+          child: SalomonBottomBar(
+            currentIndex: _selectedIndex,
+            selectedItemColor: MbaColors.white,
+            unselectedItemColor: MbaColors.dark,
+            backgroundColor: MbaColors.red,
+            itemPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            onTap: _onItemTapped,
+            items: [
+              _bottomBarItem(Icons.home, 'Əsas',),
+              _bottomBarItem(Icons.sports_motorsports, 'Kurslar'),
+              _bottomBarItem(Icons.newspaper, 'Yeniliklər',),
+              _bottomBarItem(Icons.warehouse, 'Qaraj',),
+              _bottomBarItem(Icons.info_outline, 'Info',),
+            ],
           ),
         ),
       ),
     );
   }
 
-  // Helper function to build BottomNavigationBarItem with rectangular background for selected item
-  BottomNavigationBarItem _buildNavigationBarItem(IconData icon, String label, int index) {
-    return BottomNavigationBarItem(
-      icon: Container(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        decoration: BoxDecoration(
-          color: _selectedIndex == index ? MbaColors.lightRed3 : Colors.white, // Colored rectangle for the selected item
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 20),
-            Text(
-              label,
-              style: TextStyle(
-                color: _selectedIndex == index ? MbaColors.red : MbaColors.lightRed3,
-                fontSize: 12,
-              ),
-            ),
-          ],
-        ),
-      ),
-      label: label,
+  SalomonBottomBarItem _bottomBarItem(IconData icon, String label){
+    return SalomonBottomBarItem(
+      icon: Icon(icon,),
+      title: Text(label),
     );
   }
+
 }

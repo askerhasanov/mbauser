@@ -1,12 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-
-import '../../elements/courseCardWidget.dart';
-import '../../globalVariables.dart';
-import '../../models/coursecard.dart';
-
+import 'package:mbauser/elements/courseCardWidget.dart';
+import 'package:provider/provider.dart';
+import '../../models/courseCard.dart';
+import '../../providers/mbaProvider.dart';
 
 class MyCoursePage extends StatefulWidget {
   const MyCoursePage({super.key});
@@ -16,31 +14,40 @@ class MyCoursePage extends StatefulWidget {
 }
 
 class _MyCoursePageState extends State<MyCoursePage> {
-  List<CourseCardModel> courses = [];
-  StreamSubscription? _courseSubscription; // To handle Firebase listener subscription
+  List<CourseCardModel> activeCourses = [];
+  List<CourseCardModel> endedCourses = [];
+  StreamSubscription? _courseSubscription;
 
   @override
   void initState() {
     super.initState();
-    _listenForCourses(); // Start listening for Firebase changes
+    _listenForCourses();
   }
 
-  // Function to listen for course updates in Firebase
   void _listenForCourses() {
+    final userId = Provider.of<MBAProvider>(context, listen: false).userId;
     _courseSubscription = FirebaseDatabase.instance
         .ref()
-        .child('users/$CurrentUserID/myCourses')
+        .child('users/$userId/myCourses')
         .onValue
         .listen((event) {
-      final data = event.snapshot.value as Map?;
-      if (mounted) { // Check if the widget is still in the tree
+      if (mounted) {
+        final data = event.snapshot.value as Map?;
         setState(() {
           if (data != null) {
-            courses = data.values
-                .map((course) => CourseCardModel.fromMap(Map<String, dynamic>.from(course)))
-                .toList();
+            activeCourses = [];
+            endedCourses = [];
+            data.forEach((key, value) {
+              final course = CourseCardModel.fromMap(Map<String, dynamic>.from(value));
+              if (course.status == 'active') {
+                activeCourses.add(course);
+              } else {
+                endedCourses.add(course);
+              }
+            });
           } else {
-            courses = [];
+            activeCourses = [];
+            endedCourses = [];
           }
         });
       }
@@ -49,7 +56,7 @@ class _MyCoursePageState extends State<MyCoursePage> {
 
   @override
   void dispose() {
-    _courseSubscription?.cancel(); // Cancel Firebase listener when widget is disposed
+    _courseSubscription?.cancel();
     super.dispose();
   }
 
@@ -58,21 +65,37 @@ class _MyCoursePageState extends State<MyCoursePage> {
     return Scaffold(
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Kursum',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text('Kurslarım', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ),
+            if (activeCourses.isNotEmpty)
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text('Aktiv Kurslar', style: TextStyle(fontSize: 18, color: Colors.red)),
+              ),
             Expanded(
-              child: courses.isEmpty
-                  ? const Center(child: Text('Kursunuz yoxdur'))
-                  : ListView.builder(
-                itemCount: courses.length,
+              child: ListView.builder(
+                itemCount: activeCourses.length,
                 itemBuilder: (context, index) {
-                  final course = courses[index];
-                  return CourseCardWidget(
-                    course: course,
-                  );
+                  final course = activeCourses[index];
+                  return CourseCardWidget(course: course);
+                },
+              ),
+            ),
+            if (endedCourses.isNotEmpty)
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text('Bitmiş Kurslar', style: TextStyle(fontSize: 18, color: Colors.red)),
+              ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: endedCourses.length,
+                itemBuilder: (context, index) {
+                  final course = endedCourses[index];
+                  return CourseCardWidget(course: course);
                 },
               ),
             ),

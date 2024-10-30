@@ -21,7 +21,7 @@ class ReservationService {
   }
 
   // Add a reservation
-  Future<void> addReservation({required String courseId, required DateTime day, required String time, required String userFullName }
+  Future<void> addReservation({required String courseId, required DateTime day, required String time, required String userFullName, required bool forMeet}
       ) async {
     final reservationsRef = _database.child('reservations');
     final newReservationRef = reservationsRef.push();
@@ -31,6 +31,7 @@ class ReservationService {
       userId: userFullName,
       date: day,
       time: time,
+      forMeet: forMeet
     ).toJson());
   }
 

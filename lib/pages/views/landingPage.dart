@@ -181,8 +181,8 @@ class _LandingPageState extends State<LandingPage> {
                           decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: MbaColors.dark,
-                                blurRadius: 2,
+                                color: Colors.black26,
+                                blurRadius: 1,
                                 spreadRadius: 0,
                                 offset: Offset.zero
                               )
@@ -210,7 +210,7 @@ class _LandingPageState extends State<LandingPage> {
                               Container(
                                 height: 100,
                                 decoration: const BoxDecoration(
-                                  color: MbaColors.lightRed2,
+                                  color: MbaColors.lightRed3,
                                   borderRadius: BorderRadius.only(
                                     bottomLeft: Radius.circular(10),
                                     bottomRight: Radius.circular(10),
@@ -316,10 +316,10 @@ class MbaCircularButton extends StatelessWidget{
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(10),
                 shape: const CircleBorder(),
-                backgroundColor: MbaColors.lightRed2,
+                backgroundColor: MbaColors.lightRed3,
               ),
               onPressed: callback,
-              child: Icon(icon, color: MbaColors.darkRed, size: 20,)
+              child: Icon(icon, color: MbaColors.red, size: 20,)
           ),
           Text(name, style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),),
         ],

@@ -55,8 +55,10 @@ dependencies:
   flutter_gen: ^5.7.0
   flutter_local_notifications: ^17.2.3
   dio: ^5.7.0
-  webview_flutter: ^4.8.0
+  webview_flutter: ^4.10.0
   flutter_launcher_icons: ^0.14.1
+  salomon_bottom_bar: ^3.3.2
+  youtube_player_flutter: ^9.1.1
 
 dev_dependencies:
   flutter_test:

@@ -147,8 +147,8 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
                       children: [
                         formField(birthDate, 'Doğum tarixiniz', 'gun-ay-il', false, _selectDate),
                         formField(profession, 'Peşəniz', 'işiniz', false, null),
-                        DropDownFormField(title: 'Cinsiniz', hint: 'seçin', controller: _cntGender, map: const {'kisi' : 'man', 'qadin' : 'woman', 'diger': 'other'}),
-                        DropDownFormField(title: 'Haradan öyrənmisiniz', hint: 'seçin', controller: _cntFind, map: const {'Sosial şəbəkədən' : 'social', 'Reklamlardan' : 'adds', 'Şəxsi tövsiyyə': 'offer', 'Özüm axtarmışam': 'search', 'digər': 'other', }),
+                        DropDownFormField(title: 'Cinsiniz', hint: 'seçin', controller: _cntGender, map: const {'kisi' : 'man', 'qadin' : 'woman', 'diger': 'other'}, isColumnar: true,),
+                        DropDownFormField(title: 'Haradan öyrənmisiniz', hint: 'seçin', controller: _cntFind, map: const {'Sosial şəbəkədən' : 'social', 'Reklamlardan' : 'adds', 'Şəxsi tövsiyyə': 'offer', 'Özüm axtarmışam': 'search', 'digər': 'other', }, isColumnar: true,),
                         const SizedBox(height: 20,),
                         MbaButton(callback: storeAdditionalData, bgColor: MbaColors.red, text: 'Next'),
                         //donthaveaccount
@@ -165,7 +165,6 @@ class _RegisterNextPageState extends State<RegisterNextPage> {
                       ],
                     ),
                   )
-
                 ]
             ),
           )

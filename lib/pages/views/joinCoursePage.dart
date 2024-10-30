@@ -1,50 +1,43 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mbauser/elements/colors.dart';
 import 'package:mbauser/elements/dropDownFormField.dart';
 import 'package:mbauser/elements/mbabutton.dart';
+import 'package:mbauser/elements/pageheader.dart';
 import 'package:mbauser/elements/uiHelpers.dart';
-import 'package:firebase_database/firebase_database.dart'; // Firebase Database
-import 'package:mbauser/providers/mbaProvider.dart';
 import 'package:provider/provider.dart';
-import '../../elements/pageheader.dart';
-import '../../models/courseBasicData.dart';
+import '../../helpers/reservation_helper.dart';
+import '../../models/courseData.dart';
+import '../../providers/mbaProvider.dart';
 import 'cardpaymentpage.dart';
+import 'homepage.dart';
 import 'myCoursePage.dart';
 
 class JoinCoursePage extends StatefulWidget {
-  final String courseId;
-  const JoinCoursePage({super.key, required this.courseId});
+  final CourseData course;
+  const JoinCoursePage({super.key, required this.course});
 
   @override
   State<JoinCoursePage> createState() => _JoinCoursePageState();
-}
-
-// Simulated course data function
-CourseBasicData courseDataFromId(String id) {
-  return CourseBasicData(
-      id: 'dassdada',
-      name: 'Sadə Paket',
-      image: 'images/1.jpeg',
-      price: '300',
-      rating: '4.5',
-      lessons: '8',
-      days: '8',
-      exams: '2');
 }
 
 class _JoinCoursePageState extends State<JoinCoursePage> {
   late SingleValueDropDownController _cntBranch;
   late SingleValueDropDownController _cntPayType;
 
-
   @override
   void initState() {
     super.initState();
     _cntBranch = SingleValueDropDownController();
     _cntPayType = SingleValueDropDownController();
-  }
 
+    // Set selected course in provider
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MBAProvider>(context, listen: false).setSelectedCourseId(widget.course.id);
+    });
+  }
 
   @override
   void dispose() {
@@ -53,181 +46,274 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
     super.dispose();
   }
 
-  // Handle Cash Payment Logic
   void handleCashPayment() async {
-    final userId = Provider.of<MBAProvider>(context, listen: false).userId;
-    final paymentRef = FirebaseDatabase.instance.ref().child('payments/cash').push();
-    await paymentRef.set({
-      'courseId': widget.courseId,
-      'userId': userId, // Replace with actual user ID
-      'status': 'waiting for admin approval',
-      'amount': courseDataFromId(widget.courseId).price,
-      'branch': _cntBranch.dropDownValue?.value ?? 'unknown',
-      'date': DateFormat('d/MMMM/y').format(DateTime.now()).toString(),
-    });
-
-    // Add course to user's myCourses node
-    await FirebaseDatabase.instance.ref().child('users/$userId/myCourses').push().set({
-      'courseId': widget.courseId,
-      'courseName': courseDataFromId(widget.courseId).name,
-      'enrollmentDate': DateFormat('d/MMMM/y').format(DateTime.now()).toString(),
-      'status': 'waiting for payment approval',
-    });
-
-    UiHelpers.showSnackBar(context: context, title: 'Nağd ödəniş əlavə olundu, adminin təsdiqini gözləyin.');
-
-    // Redirect to MyCoursePage
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const MyCoursePage()),
+    // Show dialog for selecting date and time
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'İlk dərs və ödəniş vaxtını seçin',
+            style: TextStyle(
+              color: MbaColors.dark,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Consumer<MBAProvider>(
+            builder: (context, provider, child) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      // Custom Date Selection Display
+                      GestureDetector(
+                        onTap: () {
+                          ReservationHelper.selectDate(context);
+                        },
+                        child: Container(
+                          height: 50,
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: MbaColors.lightRed3,
+                          ),
+                          child: Center(
+                            child: Text(
+                              provider.selectedDate != null
+                                  ? DateFormat('d, MMM, yyyy').format(provider.selectedDate!)
+                                  : 'Seçin',
+                              style: TextStyle(
+                                color: provider.selectedDate != null ? Colors.black : Colors.grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      // Time Selection Dropdown
+                      SizedBox(
+                        height: 50,
+                        width: 100,
+                        child: ReservationHelper.timeSlotDropdown(context, (selectedTime) {
+                          provider.selectTime(selectedTime);
+                        }),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  // Check Slot Availability and Show Reserve Button if Available
+                  ReservationHelper.checkSlotAvailability(context, () {
+                    // Reserve slot and save payment details
+                    ReservationHelper.reserveSlot(context, true);
+                    _savePaymentDetails('cash'); // Save cash payment details
+                    Navigator.pop(context);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => MyCoursePage()),
+                      ModalRoute.withName(HomePage.id), // This removes all routes until you reach the home route
+                    );// Close reservation dialog
+                    UiHelpers.showSnackBar(context: context, title: 'Reservation successful');
+                  }),
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
-  // Handle Card Payment Logic
   void handleCardPayment() {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CardPaymentPage(
-          courseId: widget.courseId,
+          courseId: widget.course.id,
           onPaymentSuccess: (String transactionId) async {
-            // Save card payment details to Firebase after successful payment
-            final paymentRef = FirebaseDatabase.instance.ref().child('payments/card').push();
-            await paymentRef.set({
-              'courseId': widget.courseId,
-              'userId': 'userId', // Replace with actual user ID
-              'transactionId': transactionId,
-              'status': 'paid',
-              'amount': courseDataFromId(widget.courseId).price,
-              'branch': _cntBranch.dropDownValue?.value ?? 'unknown',
-              'date': DateFormat('d/MMMM/y').format(DateTime.now()).toString(),
-            });
-
-            // Add course to user's active courses
-            await FirebaseDatabase.instance
-                .ref()
-                .child('users/userId/courses') // Replace 'userId' with actual user ID
-                .child(widget.courseId)
-                .set({
-              'status': 'active',
-              'enrollmentDate': DateFormat('d/MMMM/y').format(DateTime.now()).toString(),
-            });
-
-            UiHelpers.showSnackBar(context: context, title: 'Kartla ödəniş uğurlu oldu.');
+            // Save payment details for card payment
+            await _savePaymentDetails('card', transactionId: transactionId);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const MyCoursePage()),
+            );
           },
         ),
       ),
     );
   }
 
+  Future<void> _savePaymentDetails(String paymentType, {String? transactionId}) async {
+    final provider = Provider.of<MBAProvider>(context, listen: false);
+    final userId = provider.userId;
+    final courseId = widget.course.id;
+    final paymentId = FirebaseDatabase.instance.ref().child('payments').push().key;
+    final paymentTime = DateTime.now();
+    final paymentData = {
+      'userId': userId,
+      'price': widget.course.price,
+      'status': paymentType == 'cash' ? 'waitingAdmin' : 'payedOut',
+      'time': DateFormat('d/MMMM/y HH:mm').format(paymentTime),
+      'forCourse': courseId,
+    };
+
+    if (paymentType == 'card') {
+      paymentData['transactionId'] = transactionId;
+      await FirebaseDatabase.instance.ref('payments/card/$paymentId').set(paymentData);
+    } else {
+      paymentData['paymentDate'] = provider.selectedDate != null
+          ? DateFormat('d/MMMM/y').format(provider.selectedDate!)
+          : null;
+      await FirebaseDatabase.instance.ref('payments/cash/$paymentId').set(paymentData);
+    }
+
+    // Add course reference under user's myCourses
+    await FirebaseDatabase.instance.ref('users/$userId/myCourses/$courseId').set({
+      'courseName': widget.course.name,
+      'enrollmentDate': DateFormat('d/MMMM/y HH:mm').format(DateTime.now()),
+      'status': 'active',
+      'branch' : _cntBranch.dropDownValue!.name,
+      'payment': {
+        'id': paymentId,
+        'type': paymentType,
+        'status': paymentType == 'card' ? 'payed' : 'waitingAdmin',
+      },
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          /// Header
-          const pageHeader(text: 'Kursa qoşul'),
-
-          /// SELECTED COURSE DATA AND PRICE
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                color: Colors.black.withAlpha(20),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Seçiminizə baxın',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 16)),
-                    const SizedBox(height: 10),
-                    yourChoiceRow(title: 'Kursun adı:', text: courseDataFromId(widget.courseId).name),
-                    const SizedBox(height: 5),
-                    yourChoiceRow(title: 'Kursun qiyməti:', text: courseDataFromId(widget.courseId).price),
-                    const SizedBox(height: 5),
-                    yourChoiceRow(
-                        title: 'Müraciət tarixi:',
-                        text: DateFormat('d/MMMM/y').format(DateTime.now()).toString()),
-                    const SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DropDownFormField(
-                              title: 'Filial',
-                              hint: 'filial seçin',
-                              controller: _cntBranch,
-                              map: const {"Mərkəz filialı": 'bayil', "Elite filialı": 'elit'}),
-                        ),
-                      ],
-                    ),
-                  ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            pageHeader(text: "Kursa qoşul"),
+            SizedBox(height: 10,),
+        
+            /// Course Data Display Section
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  color: MbaColors.lightRed3,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Seçiminizə baxın',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: MbaColors.dark, fontSize: 18)),
+                      const SizedBox(height: 20),
+                      yourChoiceRow(title: 'Kurs:', text: widget.course.name),
+                      const SizedBox(height: 5),
+                      yourChoiceRow(title: 'Qiymət:', text: widget.course.price),
+                      const SizedBox(height: 5),
+                      yourChoiceRow(
+                          title: 'Tarix:',
+                          text: DateFormat('d/MMMM/y').format(DateTime.now()).toString()),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 150,
+                            child: Text(
+                              'Filial: ',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Container(
+                              child: DropDownFormField(
+                                title: '',
+                                isColumnar: false,
+                                hint: 'seçin',
+                                controller: _cntBranch,
+                                map: widget.course.category == 'vip'
+                                    ? {"Mərkəz filialı": 'bayil', "Elite filialı": 'elit'}
+                                    : {"Elite filialı": 'elit'},
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-
-          /// SELECT PAYMENT TYPE
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                color: Colors.black.withAlpha(20),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ödəniş tipini seçin',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 16)),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DropDownFormField(
+        
+            /// Payment Type Selection Section
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  color: MbaColors.lightRed3,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Ödəniş tipini seçin',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: MbaColors.dark, fontSize: 18)),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: DropDownFormField(
                               title: 'Tip:',
                               hint: 'tipi seçin',
+                              isColumnar: false,
                               controller: _cntPayType,
-                              map: const {"Nağd": 'cash', "Kart": 'card'}),
-                        ),
-                      ],
-                    ),
-                  ],
+                              map: const {"Nağd": 'cash', "Kart": 'card'},
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-
-          /// PROCEED BUTTON
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: MbaButton(
-              callback: () {
-                if (_cntPayType.dropDownValue == null) {
-                  UiHelpers.showSnackBar(context: context, title: 'Ödəniş tipini seçin!');
-                } else {
-                  if (_cntPayType.dropDownValue!.value == 'cash') {
-                    handleCashPayment(); // Call the cash payment function
-                  } else {
-                    handleCardPayment(); // Call the card payment function
+        
+            /// Proceed Button
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: MbaButton(
+                callback: () {
+                  if(_cntBranch.dropDownValue == null){
+                    UiHelpers.showSnackBar(context: context, title: 'Filial seçin!');
+                  }else{
+                    if (_cntPayType.dropDownValue == null) {
+                      UiHelpers.showSnackBar(context: context, title: 'Ödəniş tipini seçin!');
+                    } else {
+                      if (_cntPayType.dropDownValue!.value == 'cash') {
+                        handleCashPayment();
+                      } else {
+                        handleCardPayment();
+                      }
+                    }
                   }
-                }
-              },
-              bgColor: Colors.red,
-              text: 'DAVAM',
+                },
+                bgColor: Colors.red,
+                text: 'DAVAM',
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-// Widget to display course details row
+// Widget to display a row of course details
 class yourChoiceRow extends StatelessWidget {
   final String title;
   final String text;
@@ -248,12 +334,12 @@ class yourChoiceRow extends StatelessWidget {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
+              color: MbaColors.white,
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-              border: Border.all(color: Colors.red, width: 2),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: Text(text),
+              child: Text(text, style: TextStyle(color: MbaColors.red),),
             ),
           ),
         ),
