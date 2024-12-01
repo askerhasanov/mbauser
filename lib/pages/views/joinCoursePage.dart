@@ -17,6 +17,7 @@ import 'myCoursePage.dart';
 
 class JoinCoursePage extends StatefulWidget {
   final CourseData course;
+
   const JoinCoursePage({super.key, required this.course});
 
   @override
@@ -24,16 +25,15 @@ class JoinCoursePage extends StatefulWidget {
 }
 
 class _JoinCoursePageState extends State<JoinCoursePage> {
-  late SingleValueDropDownController _cntBranch;
-  late SingleValueDropDownController _cntPayType;
+  late SingleValueDropDownController _branchController;
+  late SingleValueDropDownController _paymentTypeController;
 
   @override
   void initState() {
     super.initState();
-    _cntBranch = SingleValueDropDownController();
-    _cntPayType = SingleValueDropDownController();
+    _branchController = SingleValueDropDownController();
+    _paymentTypeController = SingleValueDropDownController();
 
-    // Set selected course in provider
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<MBAProvider>(context, listen: false).setSelectedCourseId(widget.course.id);
     });
@@ -41,13 +41,12 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
 
   @override
   void dispose() {
-    _cntBranch.dispose();
-    _cntPayType.dispose();
+    _branchController.dispose();
+    _paymentTypeController.dispose();
     super.dispose();
   }
 
   void handleCashPayment() async {
-    // Show dialog for selecting date and time
     showDialog(
       context: context,
       builder: (context) {
@@ -67,7 +66,6 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
                 children: [
                   Row(
                     children: [
-                      // Custom Date Selection Display
                       GestureDetector(
                         onTap: () {
                           ReservationHelper.selectDate(context);
@@ -94,7 +92,6 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
                         ),
                       ),
                       const SizedBox(width: 20),
-                      // Time Selection Dropdown
                       SizedBox(
                         height: 50,
                         width: 100,
@@ -105,16 +102,14 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  // Check Slot Availability and Show Reserve Button if Available
                   ReservationHelper.checkSlotAvailability(context, () {
-                    // Reserve slot and save payment details
                     ReservationHelper.reserveSlot(context, true);
-                    _savePaymentDetails('cash'); // Save cash payment details
+                    _savePaymentDetails('cash');
                     Navigator.pop(context);
                     Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => MyCoursePage()),
-                      ModalRoute.withName(HomePage.id), // This removes all routes until you reach the home route
-                    );// Close reservation dialog
+                      MaterialPageRoute(builder: (context) => const MyCoursePage()),
+                      ModalRoute.withName(HomePage.id),
+                    );
                     UiHelpers.showSnackBar(context: context, title: 'Reservation successful');
                   }),
                 ],
@@ -133,7 +128,6 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
         builder: (context) => CardPaymentPage(
           courseId: widget.course.id,
           onPaymentSuccess: (String transactionId) async {
-            // Save payment details for card payment
             await _savePaymentDetails('card', transactionId: transactionId);
             Navigator.pushReplacement(
               context,
@@ -169,12 +163,11 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
       await FirebaseDatabase.instance.ref('payments/cash/$paymentId').set(paymentData);
     }
 
-    // Add course reference under user's myCourses
     await FirebaseDatabase.instance.ref('users/$userId/myCourses/$courseId').set({
       'courseName': widget.course.name,
       'enrollmentDate': DateFormat('d/MMMM/y HH:mm').format(DateTime.now()),
       'status': 'active',
-      'branch' : _cntBranch.dropDownValue!.name,
+      'branch': _branchController.dropDownValue!.name,
       'payment': {
         'id': paymentId,
         'type': paymentType,
@@ -183,163 +176,149 @@ class _JoinCoursePageState extends State<JoinCoursePage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            pageHeader(text: "Kursa qoşul"),
-            SizedBox(height: 10,),
-        
-            /// Course Data Display Section
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: MbaColors.lightRed3,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Seçiminizə baxın',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: MbaColors.dark, fontSize: 18)),
-                      const SizedBox(height: 20),
-                      yourChoiceRow(title: 'Kurs:', text: widget.course.name),
-                      const SizedBox(height: 5),
-                      yourChoiceRow(title: 'Qiymət:', text: widget.course.price),
-                      const SizedBox(height: 5),
-                      yourChoiceRow(
-                          title: 'Tarix:',
-                          text: DateFormat('d/MMMM/y').format(DateTime.now()).toString()),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 150,
-                            child: Text(
-                              'Filial: ',
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Container(
-                              child: DropDownFormField(
-                                title: '',
-                                isColumnar: false,
-                                hint: 'seçin',
-                                controller: _cntBranch,
-                                map: widget.course.category == 'vip'
-                                    ? {"Mərkəz filialı": 'bayil', "Elite filialı": 'elit'}
-                                    : {"Elite filialı": 'elit'},
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-        
-            /// Payment Type Selection Section
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: MbaColors.lightRed3,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Ödəniş tipini seçin',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: MbaColors.dark, fontSize: 18)),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: DropDownFormField(
-                              title: 'Tip:',
-                              hint: 'tipi seçin',
-                              isColumnar: false,
-                              controller: _cntPayType,
-                              map: const {"Nağd": 'cash', "Kart": 'card'},
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-        
-            /// Proceed Button
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: MbaButton(
-                callback: () {
-                  if(_cntBranch.dropDownValue == null){
-                    UiHelpers.showSnackBar(context: context, title: 'Filial seçin!');
-                  }else{
-                    if (_cntPayType.dropDownValue == null) {
-                      UiHelpers.showSnackBar(context: context, title: 'Ödəniş tipini seçin!');
-                    } else {
-                      if (_cntPayType.dropDownValue!.value == 'cash') {
-                        handleCashPayment();
-                      } else {
-                        handleCardPayment();
-                      }
-                    }
-                  }
-                },
-                bgColor: Colors.red,
-                text: 'DAVAM',
-              ),
-            ),
+            const pageHeader(text: "Kursa qoşul"),
+            const SizedBox(height: 10),
+            _buildCourseDetails(),
+            _buildPaymentTypeSelector(),
+            _buildProceedButton(),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildCourseDetails() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          color: MbaColors.lightRed3,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Seçiminizə baxın',
+                style: TextStyle(fontWeight: FontWeight.bold, color: MbaColors.dark, fontSize: 18),
+              ),
+              const SizedBox(height: 20),
+              yourChoiceRow(title: 'Kurs:', text: widget.course.name),
+              const SizedBox(height: 5),
+              yourChoiceRow(title: 'Qiymət:', text: widget.course.price),
+              const SizedBox(height: 5),
+              yourChoiceRow(
+                  title: 'Tarix:',
+                  text: DateFormat('d/MMMM/y').format(DateTime.now()).toString()),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  const SizedBox(width: 150, child: Text('Filial:', style: TextStyle(fontWeight: FontWeight.bold))),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: DropDownFormField(
+                      title: '',
+                      isColumnar: false,
+                      hint: 'seçin',
+                      controller: _branchController,
+                      map: widget.course.category == 'vip'
+                          ? {"Mərkəz filialı": 'bayil', "Elite filialı": 'elit'}
+                          : {"Elite filialı": 'elit'},
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPaymentTypeSelector() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          color: MbaColors.lightRed3,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Ödəniş tipini seçin',
+                style: TextStyle(fontWeight: FontWeight.bold, color: MbaColors.dark, fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              DropDownFormField(
+                title: 'Tip:',
+                hint: 'tipi seçin',
+                isColumnar: false,
+                controller: _paymentTypeController,
+                map: const {"Nağd": 'cash', "Kart": 'card'},
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProceedButton() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: MbaButton(
+        callback: () {
+          if (_branchController.dropDownValue == null) {
+            UiHelpers.showSnackBar(context: context, title: 'Filial seçin!');
+          } else if (_paymentTypeController.dropDownValue == null) {
+            UiHelpers.showSnackBar(context: context, title: 'Ödəniş tipini seçin!');
+          } else if (_paymentTypeController.dropDownValue!.value == 'cash') {
+            handleCashPayment();
+          } else {
+            handleCardPayment();
+          }
+        },
+        bgColor: Colors.red,
+        text: 'DAVAM',
+      ),
+    );
+  }
 }
 
-// Widget to display a row of course details
+// Widget for Course Details Rows
 class yourChoiceRow extends StatelessWidget {
   final String title;
   final String text;
+
   const yourChoiceRow({super.key, required this.title, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SizedBox(
-          width: 150,
-          child: Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
+        SizedBox(width: 150, child: Text(title, style: const TextStyle(fontWeight: FontWeight.bold))),
         const SizedBox(width: 10),
         Expanded(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: MbaColors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: Text(text, style: TextStyle(color: MbaColors.red),),
+              child: Text(text, style: const TextStyle(color: MbaColors.red)),
             ),
           ),
         ),

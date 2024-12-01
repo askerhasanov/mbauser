@@ -122,4 +122,11 @@ class ReservationHelper {
       forMeet: fromCashPayment
     );
   }
+
+  static bool isLessThanOneHourToNow(String dateTimeString) {
+    DateTime givenDateTime = DateTime.parse(dateTimeString);
+    DateTime now = DateTime.now();
+    Duration difference = givenDateTime.difference(now);
+    return difference.isNegative || difference.inMinutes < 60;
+  }
 }

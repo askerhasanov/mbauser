@@ -4,7 +4,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:mbauser/elements/colors.dart';
 import 'package:mbauser/elements/mbabutton.dart';
 import 'package:mbauser/elements/pageheader.dart';
-import '../../models/courseData.dart'; // Import CourseData model
+import '../../models/courseData.dart';
 import 'joinCoursePage.dart';
 
 class CourseDetails extends StatefulWidget {
@@ -36,7 +36,6 @@ class _CourseDetailsState extends State<CourseDetails> with TickerProviderStateM
     super.dispose();
   }
 
-
   void _startVideo() {
     setState(() {
       _youtubeController = YoutubePlayerController(
@@ -64,15 +63,13 @@ class _CourseDetailsState extends State<CourseDetails> with TickerProviderStateM
           children: [
             Column(
               children: [
-                /// Header
                 const pageHeader(text: 'Kurs haqqında'),
 
-                /// Image or Video Section
+                // Image or Video Section
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Stack(
                     children: [
-                      // Show image if video is not playing
                       if (!isVideoPlaying)
                         Image.network(
                           widget.course.imageUrl,
@@ -80,29 +77,21 @@ class _CourseDetailsState extends State<CourseDetails> with TickerProviderStateM
                           width: double.infinity,
                           height: double.infinity,
                         ),
-
-                      // Show play button if the video is not playing and there's a video URL
                       if (!isVideoPlaying && widget.course.videoUrl.isNotEmpty)
                         Positioned(
-                          top: 0,
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
                           child: Center(
                             child: IconButton(
                               icon: const Icon(Icons.play_circle_fill, size: 70, color: MbaColors.red),
                               onPressed: () {
                                 setState(() {
-                                  isVideoPlaying = true; // Switch to video
-                                  _startVideo(); // Restart the video from the beginning
+                                  isVideoPlaying = true;
+                                  _startVideo();
                                 });
                               },
                             ),
                           ),
                         ),
-
-                      // Show the YouTube player when the video starts
-                      if (isVideoPlaying && widget.course.videoUrl.isNotEmpty)
+                      if (isVideoPlaying)
                         YoutubePlayer(
                           controller: _youtubeController,
                           showVideoProgressIndicator: true,
@@ -112,7 +101,6 @@ class _CourseDetailsState extends State<CourseDetails> with TickerProviderStateM
                   ),
                 ),
 
-                /// Course Details Section
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -122,105 +110,100 @@ class _CourseDetailsState extends State<CourseDetails> with TickerProviderStateM
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.course.name, // Course name
+                            widget.course.name,
                             style: const TextStyle(
                                 color: MbaColors.dark, fontWeight: FontWeight.bold, fontSize: 25),
                           ),
                           Container(
                             decoration: BoxDecoration(
                               color: MbaColors.lightRed3,
-                              borderRadius: BorderRadius.circular(5)
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    '₼ ${widget.course.price}',
-                                  style: TextStyle(color: MbaColors.red, fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                              )
-                          ), // Course price
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                '₼ ${widget.course.price}',
+                                style: const TextStyle(
+                                    color: MbaColors.red, fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
-                      /// Tab Bar
+                      // Tab Bar
                       Container(
-                        height: 40,
+                        height: 50,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: MbaColors.lightRed3
+                          borderRadius: BorderRadius.circular(20),
+                          color: MbaColors.lightRed3
                         ),
-                        child: TabBar(
-                          unselectedLabelColor: MbaColors.dark,
-                          dividerColor: Colors.transparent,
-                          labelColor: MbaColors.red,
-                          indicatorPadding: EdgeInsets.all(1),
-                          labelPadding: EdgeInsets.zero,
-                          indicator: const BoxDecoration(
-                            color: MbaColors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          child: TabBar(
+                            unselectedLabelColor: MbaColors.dark,
+                            labelColor: MbaColors.red,
+                            labelPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                            dividerColor: Colors.transparent,
+                            overlayColor: WidgetStateColor.transparent,
+                            indicator: const BoxDecoration(
+                              color: MbaColors.white,
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
+                            padding: EdgeInsets.all(2),
+                            controller: _tabController,
+                           tabs: const [
+                              Tab(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(FontAwesome.list_ul_solid, size: 16),
+                                    SizedBox(width: 10),
+                                    Text('Dərslər', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                                  ],
+                                ),
+                              ),
+                              Tab(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(FontAwesome.book_open_solid, size: 16),
+                                    SizedBox(width: 10),
+                                    Text('Ətraflı', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                                  ],
+                                ),
+                              ),
+                              Tab(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(FontAwesome.comments_solid, size: 16),
+                                    SizedBox(width: 10),
+                                    Text('Fikirlər', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          controller: _tabController,
-                          tabs: const [
-                            Tab(
-                              height: 30,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(FontAwesome.list_ul_solid, size: 15),
-                                  SizedBox(width: 10),
-                                  Text('Dərslər'),
-                                ],
-                              ),
-                            ),
-                            Tab(
-                              height: 30,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(FontAwesome.book_open_solid, size: 15),
-                                  SizedBox(width: 10),
-                                  Text('Haqqında'),
-                                ],
-                              ),
-                            ),
-                            Tab(
-                              height: 30,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(FontAwesome.comments_solid, size: 15),
-                                  SizedBox(width: 10),
-                                  Text('Fikirlər'),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                       const SizedBox(height: 10),
-                      /// Tab Bar Views
                       SizedBox(
                         height: 350,
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            /// Lessons Tab
                             ListView.builder(
                               shrinkWrap: true,
-                              clipBehavior: Clip.none, // Ensures scrolling items are not clipped
-                              itemCount: widget.course.lessons.length, // Course lessons
+                              itemCount: widget.course.lessons.length,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: MbaColors.lightRed3,
-                                      borderRadius: BorderRadius.circular(10)
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                     // Background color set on the container
                                     child: ListTile(
                                       leading: Container(
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: MbaColors.red,
                                           shape: BoxShape.circle,
                                         ),
@@ -228,71 +211,46 @@ class _CourseDetailsState extends State<CourseDetails> with TickerProviderStateM
                                           padding: const EdgeInsets.all(5.0),
                                           child: Text(
                                             (index + 1).toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: MbaColors.white,
-                                              fontSize: 16,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 12
                                             ),
                                           ),
                                         ),
                                       ),
-                                      title: Text(
-                                        widget.course.lessons[index],
-                                        style: TextStyle(
-                                          color: MbaColors.dark,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                        ),
-                                      ),
+                                      title: Text(widget.course.lessons[index], style: TextStyle(color: MbaColors.dark, fontSize: 14, fontWeight: FontWeight.bold),),
                                     ),
                                   ),
                                 );
                               },
                             ),
-                            /// About Tab
                             Padding(
                               padding: const EdgeInsets.all(16.0),
-                              child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(widget.course.about, textAlign: TextAlign.justify, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MbaColors.dark),),
-                                  )), // Course description
+                              child: Text(widget.course.about,
+                                  textAlign: TextAlign.justify,
+                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                             ),
-                            /// Reviews Tab
                             ListView.builder(
-                              itemCount: widget.course.reviews.length, // Course reviews
+                              itemCount: widget.course.reviews.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: MbaColors.lightRed3
-                                    ),
-                                    child: ListTile(
-                                      title: Text(widget.course.reviews[index].username, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: MbaColors.red),),
-                                      subtitle: Text(widget.course.reviews[index].review, style: TextStyle(color: MbaColors.dark, fontWeight: FontWeight.normal, fontSize: 14),),
-                                      trailing: Container(
-                                        decoration: BoxDecoration(
-                                          color: MbaColors.white,
-                                          borderRadius: BorderRadius.circular(5)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Icon(widget.course.reviews[index].rating % 0.5 == 0 ? FontAwesome.star_solid : FontAwesome.star_half_solid, color: Colors.amberAccent, size: 25,),
-                                              SizedBox(height: 2,),
-                                              Text(widget.course.reviews[index].rating.toString(), style: TextStyle(color: MbaColors.dark, fontWeight: FontWeight.bold, fontSize: 14),)
-                                            ],
-                                          ),
-                                        ),
+                                return  Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: ListTile(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                      tileColor: MbaColors.lightRed3,
+                                      title: Text(widget.course.reviews[index].username,
+                                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                      subtitle: Text(widget.course.reviews[index].review, style: TextStyle(fontSize: 14),),
+                                      trailing: Column(
+                                        children: [
+                                          Icon(FontAwesome.star_solid, color: Colors.orangeAccent,),
+                                          SizedBox(height: 5,),
+                                          Text(widget.course.reviews[index].rating.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: MbaColors.dark),)
+                                        ],
                                       ),
                                     ),
-                                  ),
                                 );
                               },
                             ),
@@ -301,11 +259,9 @@ class _CourseDetailsState extends State<CourseDetails> with TickerProviderStateM
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
-
-            /// Join Button
             Positioned(
               left: 0,
               right: 0,
@@ -314,11 +270,10 @@ class _CourseDetailsState extends State<CourseDetails> with TickerProviderStateM
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: MbaButton(
                   callback: () {
-                    // Navigate to JoinCoursePage with course data
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => JoinCoursePage(course: widget.course), // Pass course data
+                        builder: (context) => JoinCoursePage(course: widget.course),
                       ),
                     );
                   },

@@ -6,6 +6,10 @@ String? CurrentUserID;
 
 UserModel? globalUser;
 
+String successUrl = 'mbauser://payment/success';
+String cancelUrl = 'mbauser://payment/cancel';
+String errorUrl = 'mbauser://payment/error';
+
 InputBorder myBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(12),
     borderSide: const BorderSide(

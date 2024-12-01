@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mbauser/elements/colors.dart';
 import 'package:mbauser/elements/uiHelpers.dart';
+import 'package:mbauser/helpers/reservation_helper.dart';
 import 'package:mbauser/providers/mbaProvider.dart';
 import 'package:provider/provider.dart';
-import '../../services/reservationService.dart';
-import '../globalVariables.dart';
 import '../models/courseCard.dart';
 
 class CourseCardWidget extends StatefulWidget {
@@ -31,20 +29,10 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
 
   // Function to reserve the slot (from your MyCoursePage.dart)
   void _reserveSlot(DateTime date, String time) async {
-    final reservationData = {
-      "courseId": widget.course.courseId,
-      "day": DateFormat('y-MM-dd').format(date),
-      "time": time,
-      "userId": CurrentUserID, // Use global user ID
-    };
-
-    FirebaseDatabase database = FirebaseDatabase.instance;
-    await database.ref('reservations').push().set(reservationData);
-
+    ReservationHelper.reserveSlot(context, false);
     // Show confirmation and set reserved state
     Navigator.of(context).pop(); // Close the dialog
     UiHelpers.showSnackBar(context: context, title: 'Rezervasiya uğurla yerinə yetirildi');
-
     setState(() {
       isReserved = true;
     });
@@ -52,7 +40,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
 
   // Function to handle reservation cancellation (customized)
   void _cancelReservation(String selectedDate) async {
-    if (isLessThanOneHourToNow(selectedDate)) {
+    if (ReservationHelper.isLessThanOneHourToNow(selectedDate)) {
       UiHelpers.showSnackBar(
         context: context,
         title: 'Vaxt keçdiyi üçün və ya bir saatdan az vaxt qaldığı üçün ləğv edə bilməzsiniz!',
@@ -64,17 +52,8 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
           isReserved = false;
           Provider.of<MBAProvider>(context, listen: false).finalDate = null;
         });
-        // Add the logic to actually cancel the reservation
       }
     }
-  }
-
-  // Helper function to check if less than one hour is left for cancellation
-  bool isLessThanOneHourToNow(String dateTimeString) {
-    DateTime givenDateTime = DateTime.parse(dateTimeString);
-    DateTime now = DateTime.now();
-    Duration difference = givenDateTime.difference(now);
-    return difference.isNegative || difference.inMinutes < 60;
   }
 
   // Function to show Yes/No dialog for confirmation
@@ -111,180 +90,78 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
     );
   }
 
-  // Function to present the date and time picker for reservation
-  void _selectReservationDate() {
+  void _selectReservationDate() async {
+    // Show dialog for selecting date and time
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Rezervasiya vaxtını seçin'),
-          content: SizedBox(
-            height: 400, // Adjusted height for better appearance
-            width: double.maxFinite,
-            child: Consumer<MBAProvider>(
-              builder: (_, state, __) {
-                return Column(
-                  children: [
-                    // Date and Time selection row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: _presentDatePicker,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(10)),
-                              border: Border.all(
-                                color: MbaColors.red,
-                                width: 2,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                state.selectedDate != null
-                                    ? DateFormat('E, d MMM, yyyy').format(state.selectedDate!).toString()
-                                    : 'Tarix',
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: _presentTimePicker,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(10)),
-                              border: Border.all(
-                                color: MbaColors.red,
-                                width: 2,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                state.selectedTime != null
-                                    ? '${state.selectedTime!.hour.toString().padLeft(2, '0')} : ${state.selectedTime!.minute.toString().padLeft(2, '0')}'
-                                    : 'Saat',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 20), // Space between elements
-
-                    // FutureBuilder to check slot availability
-                    if (state.selectedDate != null && state.selectedTime != null)
-                      FutureBuilder<bool>(
-                        future: ReservationService().isSlotAvailable(
-                          state.selectedDate!,
-                          '${state.selectedTime!.hour.toString().padLeft(2, '0')}:${state.selectedTime!.minute.toString().padLeft(2, '0')}',
-                        ),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const CircularProgressIndicator(); // Display loading indicator
-                          } else if (snapshot.hasError) {
-                            return Container(
-                              child: Center(child: Text('Error: ${snapshot.error}')),
-                            );
-                          } else if (snapshot.hasData && snapshot.data == true) {
-                            // Slot is available, show Reserve button
-                            return Column(
-                              children: [
-                                const Text('Slot is available', style: TextStyle(color: Colors.green)),
-                                const SizedBox(height: 20),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    _reserveSlot(
-                                      state.selectedDate!,
-                                      '${state.selectedTime!.hour.toString().padLeft(2, '0')}:${state.selectedTime!.minute.toString().padLeft(2, '0')}',
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: MbaColors.red,
-                                  ),
-                                  child: const Text('Reserve'),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return const Text('Slot is not available', style: TextStyle(color: Colors.red));
-                          }
-                        },
-                      ),
-                  ],
-                );
-              },
+          title: const Text(
+            'Rezervasiya vaxtını seçin',
+            style: TextStyle(
+              color: MbaColors.dark,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
             ),
           ),
-        );
-      },
-    );
-  }
-
-  // Date picker for selecting reservation date
-  void _presentDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      Provider.of<MBAProvider>(context, listen: false).selectDate(pickedDate);
-    });
-  }
-
-  // Time picker for selecting reservation time
-  void _presentTimePicker() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Saatı seçin'),
-          content: SizedBox(
-            width: double.maxFinite,
-            height: 300,
-            child: _buildTimeList(),
+          content: Consumer<MBAProvider>(
+            builder: (context, provider, child) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      // Custom Date Selection Display
+                      GestureDetector(
+                        onTap: () {
+                          ReservationHelper.selectDate(context);
+                        },
+                        child: Container(
+                          height: 50,
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: MbaColors.lightRed3,
+                          ),
+                          child: Center(
+                            child: Text(
+                              provider.selectedDate != null
+                                  ? DateFormat('d, MMM, yyyy').format(provider.selectedDate!)
+                                  : 'Seçin',
+                              style: TextStyle(
+                                color: provider.selectedDate != null ? Colors.black : Colors.grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      // Time Selection Dropdown
+                      SizedBox(
+                        height: 50,
+                        width: 100,
+                        child: ReservationHelper.timeSlotDropdown(context, (selectedTime) {
+                          provider.selectTime(selectedTime);
+                        }),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  // Check Slot Availability and Show Reserve Button if Available
+                  ReservationHelper.checkSlotAvailability(context, () {
+                    // Reserve slot and save payment details
+                    ReservationHelper.reserveSlot(context, false);
+                    Navigator.pop(context);
+                    UiHelpers.showSnackBar(context: context, title: 'Reservation successful');
+                  }),
+                ],
+              );
+            },
           ),
         );
       },
-    );
-  }
-
-  // Function to build available time slots
-  Widget _buildTimeList() {
-    DateTime now = DateTime.now();
-    int currentHour = now.hour;
-    int startHour = currentHour + 1;
-    if (startHour < 9) startHour = 9; // Ensure minimum start time is 9 AM
-    int endHour = 21; // 9 PM
-
-    List<Widget> timeSlots = [];
-    for (int hour = startHour; hour <= endHour; hour++) {
-      timeSlots.add(
-        ListTile(
-          title: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('${hour.toString().padLeft(2, '0')}:00',
-                style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-          ),
-          onTap: () {
-            Provider.of<MBAProvider>(context, listen: false).selectTime(TimeOfDay(hour: hour, minute: 00));
-          },
-        ),
-      );
-    }
-    return GridView(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 2.0, // Adjust as needed
-      ),
-      shrinkWrap: true,
-      children: timeSlots,
     );
   }
 
@@ -299,7 +176,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
           children: [
             Container(
               decoration: const BoxDecoration(
-                color: MbaColors.darkRed,
+                color: MbaColors.dark,
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
               child: Padding(
@@ -307,7 +184,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: MbaColors.lightRed,
+                    color: MbaColors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
                   child: Column(
@@ -328,8 +205,8 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                                       child: Text(
                                         'Kursun adı:',
                                         style: TextStyle(
-                                          color: MbaColors.darkRed,
-                                          fontSize: 18,
+                                          color: MbaColors.dark,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -337,8 +214,8 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                                     Text(
                                       widget.course.courseName,
                                       style: const TextStyle(
-                                        color: MbaColors.darkRed,
-                                        fontSize: 18,
+                                        color: MbaColors.red,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -354,8 +231,8 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                                       child: Text(
                                         'Qeydiyyat tarixi:',
                                         style: TextStyle(
-                                          color: MbaColors.darkRed,
-                                          fontSize: 18,
+                                          color: MbaColors.dark,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -363,8 +240,8 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                                     Text(
                                       widget.course.enrollmentDate,
                                       style: const TextStyle(
-                                        color: MbaColors.darkRed,
-                                        fontSize: 18,
+                                        color: MbaColors.red,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -380,8 +257,8 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                                       child: Text(
                                         'Filial:',
                                         style: TextStyle(
-                                          color: MbaColors.darkRed,
-                                          fontSize: 18,
+                                          color: MbaColors.dark,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -389,8 +266,9 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                                     Text(
                                       widget.course.branch,
                                       style: const TextStyle(
-                                        color: Colors.white,
+                                        color: MbaColors.red,
                                         fontSize: 16,
+                                        fontWeight: FontWeight.bold
                                       ),
                                     ),
                                   ],
@@ -404,8 +282,8 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                                       Text(
                                         'Bu kurs bitmişdir',
                                         style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 18,
+                                          color: MbaColors.red,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -413,51 +291,44 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                                   )
                                 else
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       const SizedBox(
                                         width: 120,
                                         child: Text(
                                           'Rezervasiya:',
                                           style: TextStyle(
-                                            color: MbaColors.darkRed,
-                                            fontSize: 18,
+                                            color: MbaColors.dark,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ),
-                                      Expanded(
-                                        child: Row(
+                                      SizedBox(
+                                        child: Column(
                                           children: [
-                                            const Icon(
-                                              FontAwesome.calendar_check,
-                                              color: MbaColors.red,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Text(
-                                                isReserved ? 'Rezervasiya edilmişdir' : 'Seçilməyib',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                ),
+                                            Text(
+                                              isReserved ? 'Rezervasiya edilmişdir' : 'Seçilməyib',
+                                              style: const TextStyle(
+                                                color: MbaColors.red,
+                                                fontSize: 14,
                                               ),
                                             ),
                                             ElevatedButton(
-                                              onPressed: widget.course.status == 'active'
+                                              onPressed: widget.course.payment['status'] == 'payed'
                                                   ? (isReserved
                                                   ? () => _cancelReservation(DateTime.now().toString())
                                                   : _selectReservationDate)
                                                   : null, // Disable button if course is not active
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor: widget.course.status == 'active'
-                                                    ? MbaColors.red
-                                                    : Colors.grey, // Disable button styling
+                                                backgroundColor: statusColor(widget.course.payment['status']), // Disable button styling
                                               ),
                                               child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
-                                                  Icon(isReserved ? FontAwesome.x_solid : FontAwesome.calendar),
-                                                  const SizedBox(width: 10),
-                                                  Text(isReserved ? 'Ləğv et' : 'Seç'),
+                                                  Icon(isReserved ? Icons.cancel : Icons.calendar_month, color: widget.course.payment['status'] == 'payedOut' ? MbaColors.red: MbaColors.white),
+                                                  SizedBox(width: 10),
+                                                  Text(isReserved ? 'Ləğv et' : 'Seç', style: TextStyle(color: widget.course.payment['status'] == 'payedOut' ? MbaColors.red: MbaColors.white),),
                                                 ],
                                               ),
                                             )
@@ -484,7 +355,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                   maxWidth: 200,
                 ),
                 decoration: const BoxDecoration(
-                  color: MbaColors.lightBg,
+                  color: MbaColors.red,
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
                 child: Padding(
@@ -496,15 +367,15 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                       children: [
                         const Icon(
                           Icons.sports_motorsports,
-                          color: MbaColors.red,
+                          color: MbaColors.white,
                         ),
                         const SizedBox(width: 10),
                         Text(
                           widget.course.courseName,
                           style: const TextStyle(
-                            color: MbaColors.red,
+                            color: MbaColors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 16,
                           ),
                         ),
                       ],
@@ -535,6 +406,12 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
         ),
       ),
     );
+  }
+
+  Color statusColor(String status){
+    return status == 'active'
+        ? MbaColors.red
+        : MbaColors.darkRed;
   }
 
   // Helper to determine icon based on payment status

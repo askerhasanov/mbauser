@@ -8,7 +8,7 @@ class FirebaseMessagingService {
   static void initialize() {
     // Initialize the local notifications plugin
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+    AndroidInitializationSettings('@mipmap/logo_icon');
 
     const InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
@@ -45,23 +45,24 @@ class FirebaseMessagingService {
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
-          notification.title,
-          notification.body,
+          notification.title ?? "New Notification", // Dynamic title
+          notification.body ?? "Check the latest updates!", // Dynamic body
           const NotificationDetails(
             android: AndroidNotificationDetails(
-              'channel_id', // Customize this ID as needed
+              'channel_id',
               'mba_notification',
               importance: Importance.max,
               priority: Priority.high,
-              icon: '@mipmap/launcher_icon',
+              icon: '@mipmap/logo_icon',
               playSound: true,
-              sound: RawResourceAndroidNotificationSound('mbanotifsound'), // Custom sound
+              sound: RawResourceAndroidNotificationSound('mbanotifsound'),
             ),
           ),
-          payload: message.data['payload'], // Add custom data as needed
+          payload: message.data['postId'], // Pass postId for navigation
         );
       }
     });
+
 
     // Handle background notifications when the app is opened
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
